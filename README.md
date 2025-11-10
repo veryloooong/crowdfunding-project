@@ -326,3 +326,7 @@ python manage.py check
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [HTMX Documentation](https://htmx.org/docs/)
 - [UV Documentation](https://docs.astral.sh/uv/)
+
+## Disclaimer
+
+This project was scaffolded with the assistance of LLMs.
