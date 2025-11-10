@@ -1,0 +1,22 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello {{ username }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% tailwind_css %}
+</head>
+
+<body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
+    <div class="container mx-auto">
+        <section class="flex items-center justify-center h-screen">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold text-blue-600 mb-4">Hello {{ username }}! 👋</h1>
+                <p class="text-xl text-gray-600">Welcome to the crowdfunding project</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
