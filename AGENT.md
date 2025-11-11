@@ -34,7 +34,7 @@ Our theme is defined in `settings.py`. The AI must **only** use these semantic c
 
 ### C. Typography (Fonts & Sizes)
 
-- **Font:** [e.g., "Inter, sans-serif" - *Specify your chosen font here*]
+- **Font:** Use `sans-serif` everywhere.
 - **Font Sizes:** Use Tailwind's built-in type scale (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, etc.).
   - **Body Text:** `text-base`
   - **Page Titles:** `text-3xl font-bold`
