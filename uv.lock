@@ -143,6 +143,7 @@ dependencies = [
     { name = "cookiecutter" },
     { name = "django" },
     { name = "django-browser-reload" },
+    { name = "django-heroicons" },
     { name = "django-htmx" },
     { name = "django-tailwind" },
     { name = "honcho" },
@@ -153,6 +154,7 @@ requires-dist = [
     { name = "cookiecutter", specifier = ">=2.6.0" },
     { name = "django", specifier = ">=5.2.8" },
     { name = "django-browser-reload", specifier = ">=1.21.0" },
+    { name = "django-heroicons", specifier = ">=0.0.8" },
     { name = "django-htmx", specifier = ">=1.26.0" },
     { name = "django-tailwind", specifier = ">=4.4.1" },
     { name = "honcho", specifier = ">=2.0.0" },
@@ -184,6 +186,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/79/ef/ab407c1a2f14e13c7
 wheels = [
     { url = "https://files.pythonhosted.org/packages/46/61/1b4a8c589652859995bcab87682286443eb9fdf2d7fd584975b9ffc1db33/django_browser_reload-1.21.0-py3-none-any.whl", hash = "sha256:0b2a86ab460774fa9bb142a121c70e75a72f18109f51a4f6de409cd633d3a70d", size = 12852, upload-time = "2025-09-22T17:00:33.479Z" },
 ]
+
+[[package]]
+name = "django-heroicons"
+version = "0.0.8"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b0/d3/c72275cec3c34ad7f1a24bce5957733ffc740f4605de0ccab5313c598e23/django_heroicons-0.0.8.tar.gz", hash = "sha256:bea76cc9bf9b0bc44fbcab65adde7c6571478b4a87103e78db7429808677707e", size = 48099, upload-time = "2020-09-11T23:00:28.917Z" }
 
 [[package]]
 name = "django-htmx"

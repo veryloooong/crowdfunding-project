@@ -44,6 +44,7 @@ INSTALLED_APPS = [
   "tailwind",  # Manages Tailwind CSS
   "django_htmx",  # Adds HTMX support
   "django_browser_reload",  # Live reloader
+  "heroicons",
   # Project apps
   "user",
   "theme",
