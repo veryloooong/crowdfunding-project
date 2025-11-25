@@ -1,71 +1,100 @@
-# Project Style Guide
+# Project Style Guide: Crowdfunding Platform
 
-This guide outlines the coding conventions and design language for our project. All generated code must adhere to these rules.
+**Status:** School Project (Optimization/Scaling is NOT a priority; Code clarity and simplicity ARE).
 
 ## 1. Technology Stack
 
-- **Backend:** Django
-- **Frontend:** HTML, Tailwind CSS, DaisyUI, HTMX
-- **Tooling:** `uv`
+- **Language:** Python 3.12+
+- **Backend Framework:** Django 5.x
+- **Database:** SQLite (`db.sqlite3` - Single file, no external server)
+- **Package Manager:** `uv`
+- **Frontend CSS:** Tailwind CSS v4 (configured via `settings.py`)
+- **Component Library:** DaisyUI (via Tailwind plugin)
+- **Interactivity:** HTMX (for dynamic behavior without writing JS)
+- **Icons:** Heroicons (via `django-heroicons`)
 
 ---
 
-## 2. UI/UX Design Language
+## 2. Architecture & Deployment
 
-This is the most important part. We use a **component-first** approach with DaisyUI, customized via `settings.py`.
-
-### A. Core Philosophy
-
-- **NEVER** write "magic numbers" for styling (e.g., `text-[13px]`, `bg-[#FF0000]`).
-- **ALWAYS** use the pre-defined DaisyUI components or Tailwind's theme-based utilities.
-- The goal is a consistent, modern, and configurable design.
-
-### B. Colors (DaisyUI Theme)
-
-Our theme is defined in `settings.py`. The AI must **only** use these semantic colors.
-
-- **Primary (`primary`):** For all main call-to-action buttons (e.g., "Donate Now", "Create Campaign").
-- **Secondary (`secondary`):** For less important actions (e.g., "Edit Profile").
-- **Accent (`accent`):** For highlights, badges, or special notices.
-- **Neutral (`neutral`):** For base backgrounds, card backgrounds, etc.
-- **Error/Success/Warning (`error`, `success`, `warning`):** For alerts and form validation.
-
-**Example Instruction:** "Create a success alert" should generate `<div class="alert alert-success">...</div>`, NOT `<div class="bg-green-500 p-4">...</div>`.
-
-### C. Typography (Fonts & Sizes)
-
-- **Font:** Use `sans-serif` everywhere.
-- **Font Sizes:** Use Tailwind's built-in type scale (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, etc.).
-  - **Body Text:** `text-base`
-  - **Page Titles:** `text-3xl font-bold`
-  - **Card Titles:** `text-xl font-semibold`
-  - **Subheadings:** `text-lg`
-
-### D. Component Usage
-
-- **Buttons:** Always use the DaisyUI `btn` class. (e.g., `btn`, `btn-primary`, `btn-outline`).
-- **Cards:** All campaigns must be displayed using the DaisyUI `card` component.
-- **Forms:** All form inputs MUST use DaisyUI classes (`input`, `textarea`, `select`, `checkbox`, `toggle`) for a consistent look.
+- **Pattern:** Monolithic MVC (Django MVT).
+  - **NO** Microservices.
+  - **NO** separate API Gateway.
+  - **NO** React/Vue/Angular SPAs.
+- **Deployment Model:** Single Node.
+  - The Web Server (Gunicorn/Django), Static Files, and Database (SQLite) all reside on the same machine.
+- **Folder Structure:** Standard Django app structure.
+  - `core/` (Project settings)
+  - `theme/` (Tailwind app)
+  - `campaigns/` (Main logic)
 
 ---
 
-## 3. Backend: Django & Python Style
+## 3. UI/UX Design Language
 
-- **PEP 8:** All Python code MUST follow PEP 8 for style and formatting.
-  - Follow the `ruff` linting rules in the `pyproject.toml` file.
-- **Views:** We prefer **Function-Based Views (FBVs)** for simplicity.
-- **Naming:**
-  - Variables & Functions: `snake_case` (e.g., `def get_campaign_details(...):`)
-  - Classes: `PascalCase` (e.g., `class Campaign(models.Model):`)
-- **Templates:**
-  - All templates must live in `[app_name]/templates/[app_name]/`.
-  - All templates must extend `base.html`.
+We use a **Component-First** approach using DaisyUI.
+
+### A. Core Rules
+
+1.  **No "Magic Numbers":** Avoid arbitrary values like `w-[13px]` or `bg-[#123456]`. Always use semantic utility classes.
+2.  **Use DaisyUI Components:** Don't build a button from scratch. Use `.btn`. Don't build a card from scratch. Use `.card`.
+3.  **Dark Mode:** The app should support the `light` and `dark` themes defined in `settings.py`.
+
+### B. Semantic Colors (Use these classes)
+
+Do not use `bg-blue-500` or `text-green-600`. Use the semantic role:
+
+- **Primary (`primary`):** Main actions (Donate, Create Campaign).
+- **Secondary (`secondary`):** Secondary actions (Edit, Settings).
+- **Accent (`accent`):** Highlights, badges, progress bars.
+- **Neutral (`neutral`):** Card backgrounds, sidebars.
+- **Base-100/200/300:** Page backgrounds.
+- **Info/Success/Warning/Error:** Contextual alerts.
+
+### C. Typography
+
+- **Font:** System sans-serif or Inter.
+- **Headings:**
+  - Page Title: `text-3xl font-bold mb-6`
+  - Section Title: `text-xl font-semibold mb-4`
+- **Body:** `text-base text-base-content`
+
+### D. Icons
+
+- Use **Heroicons** Outline or Solid.
+- Implementation: `{% heroicon_outline "icon-name" class="w-5 h-5" %}`
 
 ---
 
-## 4. HTMX Conventions
+## 4. Backend Conventions (Django)
 
-- **Purpose:** Use HTMX for partial page updates to make the app feel dynamic. (e.g., donation forms, live-updating totals, favoriting a campaign).
-- **Views:** Django views that respond to an HTMX request MUST return _only_ the HTML fragment (a "partial"), not the full page.
-- **Targeting:** Use specific `id` attributes for `hx-target`.
-- **Style:** Do NOT mix styling classes (like `btn`) with HTMX attributes. Keep them separate.
+### A. Code Style
+
+- Follow **PEP 8**.
+- Use **Function-Based Views (FBVs)** for better readability and easier integration with HTMX.
+- **Type Hinting:** Use Python type hints where helpful (e.g., `def get_campaign(request: HttpRequest) -> HttpResponse:`).
+
+### B. Models
+
+- Use `PascalCase` for model names (`Campaign`, `Donation`).
+- Use `snake_case` for field names.
+- **Money:** Always use `DecimalField` for currency (never `FloatField`).
+
+### C. Views & HTMX
+
+- **Pattern:** Views should be able to detect HTMX requests.
+- **HTMX Logic:**
+  - If `request.htmx`: Return a **partial template** (HTML snippet).
+  - If standard request: Return the **full template** (extends `base.html`).
+- **Attributes:** Use `hx-get`, `hx-post`, `hx-target`, and `hx-swap` to handle interactions.
+  - _Example:_ `<button hx-post="/donate/1" hx-target="#donation-count" hx-swap="outerHTML">Donate</button>`
+
+---
+
+## 5. Coding Workflow (AI Instructions)
+
+When generating code:
+
+1.  **Simplicity first:** Do not over-engineer.
+2.  **No React/Next.js:** If I ask for frontend code, give me Django Templates + Tailwind.
+3.  **Config:** If Tailwind config is needed, remember it is done in `settings.py` (Tailwind v4), not `tailwind.config.js`.
