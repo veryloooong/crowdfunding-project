@@ -61,3 +61,7 @@ All user accounts can reach out to the website support team for assistance with 
 The platform integrates with third-party services for payment processing, email notifications, and social media sharing. These integrations enhance the user experience and provide additional functionality to support fundraising efforts.
 
 In the demo, these integrations are omitted for simplicity.
+
+## User interface
+
+The codebase uses Tailwind + DaisyUI for styling. The style is basic and accessible, mostly mouse-first.
