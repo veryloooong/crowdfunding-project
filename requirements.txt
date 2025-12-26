@@ -27,6 +27,8 @@ django==5.2.8
     #   django-tailwind
 django-browser-reload==1.21.0
     # via crowdfunding-project (pyproject.toml)
+django-heroicons==0.0.8
+    # via crowdfunding-project (pyproject.toml)
 django-htmx==1.26.0
     # via crowdfunding-project (pyproject.toml)
 django-tailwind==4.4.1
