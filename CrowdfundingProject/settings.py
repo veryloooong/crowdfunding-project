@@ -47,6 +47,9 @@ INSTALLED_APPS = [
   "heroicons",
   # Project apps
   "user",
+  "campaigns",
+  "donations",
+  "groups",
   "theme",
 ]
 
@@ -129,7 +132,19 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Auth
+
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+# Theme
+
+DEFAULT_UI_THEME = "light"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"

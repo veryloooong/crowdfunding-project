@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Campaigns{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col gap-4">
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <h1 class="text-3xl font-bold mb-2">Campaigns</h1>
+
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <label class="form-control">
+            <div class="label"><span class="label-text">Search</span></div>
+            <input class="input input-bordered" type="text" name="q" value="{{ q }}" placeholder="title or description" />
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">Category</span></div>
+            <select class="select select-bordered" name="category">
+              <option value="">All</option>
+              {% for c in categories %}
+                <option value="{{ c.slug }}" {% if category == c.slug %}selected{% endif %}>{{ c.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">Sort</span></div>
+            <select class="select select-bordered" name="sort">
+              <option value="" {% if not sort %}selected{% endif %}>Newest</option>
+              <option value="popular" {% if sort == "popular" %}selected{% endif %}>Popular</option>
+              <option value="urgent" {% if sort == "urgent" %}selected{% endif %}>Urgent</option>
+            </select>
+          </label>
+
+          <div class="flex items-end gap-2">
+            <button class="btn btn-primary" type="submit">Apply</button>
+            <a class="btn btn-ghost" href="/">Reset</a>
+          </div>
+        </form>
+
+        {% if request.user.is_authenticated %}
+          <div class="mt-4">
+            <a class="btn btn-secondary" href="/campaigns/new/">Create campaign</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for campaign in campaigns %}
+        <div class="card bg-base-100">
+          <div class="card-body">
+            {% if campaign.image_url %}
+              <figure class="mb-3">
+                <img class="rounded-box w-full" src="{{ campaign.image_url }}" alt="{{ campaign.title }}" />
+              </figure>
+            {% endif %}
+
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-xl font-semibold mb-1">
+                  <a class="link link-hover" href="/campaigns/{{ campaign.id }}/">{{ campaign.title }}</a>
+                </h2>
+                <div class="text-sm text-base-content/70">Ends: {{ campaign.end_date }}</div>
+              </div>
+              {% if not campaign.is_active %}
+                <div class="badge badge-neutral">Ended</div>
+              {% endif %}
+            </div>
+
+            <p class="text-base text-base-content mt-2">{{ campaign.description|truncatechars:180 }}</p>
+
+            <div class="mt-3">
+              {% include "campaigns/partials/progress.html" with campaign=campaign %}
+            </div>
+
+            {% if campaign.categories.all %}
+              <div class="mt-3 flex flex-wrap gap-2">
+                {% for c in campaign.categories.all %}
+                  <span class="badge badge-accent badge-outline">{{ c.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if campaign.tags.all %}
+              <div class="mt-2 flex flex-wrap gap-2">
+                {% for t in campaign.tags.all %}
+                  <span class="badge badge-outline">#{{ t.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="card-actions justify-end mt-4">
+              <a class="btn btn-primary" href="/campaigns/{{ campaign.id }}/">View</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="card bg-base-100 md:col-span-2">
+          <div class="card-body">
+            <div class="alert alert-info"><span>No campaigns found.</span></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

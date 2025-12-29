@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Create event{% endblock %}
+
+{% block content %}
+  <div class="card bg-base-100 max-w-3xl">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold mb-2">Create event</h1>
+      <div class="text-sm text-base-content/70 mb-4">For campaign: {{ campaign.title }}</div>
+
+      <form method="post" class="space-y-3">
+        {% csrf_token %}
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Title</span></div>
+          <input class="input input-bordered" name="title" required />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Start time</span></div>
+          <input class="input input-bordered" name="starts_at" type="datetime-local" required />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Location</span></div>
+          <input class="input input-bordered" name="location" />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Description</span></div>
+          <textarea class="textarea textarea-bordered" name="description" rows="4"></textarea>
+        </label>
+
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary" type="submit">Create</button>
+          <a class="btn btn-ghost" href="/campaigns/{{ campaign.id }}/">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

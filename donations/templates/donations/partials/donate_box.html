@@ -1,0 +1,52 @@
+{% if request.user.is_authenticated %}
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="font-semibold">Donate</h3>
+      <form
+        method="post"
+        action="/donations/campaign/{{ campaign.id }}/"
+        hx-post="/donations/campaign/{{ campaign.id }}/"
+        hx-target="#donation-panel-{{ campaign.id }}"
+        hx-swap="outerHTML"
+        class="space-y-2"
+      >
+        {% csrf_token %}
+        <label class="form-control">
+          <div class="label"><span class="label-text">Amount</span></div>
+          <input class="input input-bordered" name="amount" type="number" step="0.01" min="0" required />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Display name (optional)</span></div>
+          <input class="input input-bordered" name="display_name" />
+        </label>
+
+        {% if request.user.groups_member.all %}
+          <label class="form-control">
+            <div class="label"><span class="label-text">Donate as group (optional)</span></div>
+            <select class="select select-bordered" name="group_id">
+              <option value="">No group</option>
+              {% for g in request.user.groups_member.all %}
+                <option value="{{ g.id }}">{{ g.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        {% endif %}
+
+        <label class="label cursor-pointer justify-start gap-2">
+          <input type="checkbox" class="checkbox" name="is_anonymous" />
+          <span class="label-text">Donate anonymously</span>
+        </label>
+
+        <button class="btn btn-primary w-full" type="submit">Donate</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <div class="alert alert-info"><span>Login is required to donate.</span></div>
+      <a class="btn btn-primary" href="/accounts/login/?next=/campaigns/{{ campaign.id }}/">Login</a>
+    </div>
+  </div>
+{% endif %}

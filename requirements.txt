@@ -69,3 +69,8 @@ tzdata==2025.2
     # via arrow
 urllib3==2.5.0
     # via requests
+
+markdown==3.7
+    # via crowdfunding-project (pyproject.toml)
+bleach==6.1.0
+    # via crowdfunding-project (pyproject.toml)

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+  <div class="card bg-base-100 max-w-xl">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold mb-2">Sign up</h1>
+
+      <form method="post" class="space-y-3">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Username</span></div>
+          {{ form.username }}
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Password</span></div>
+          {{ form.password1 }}
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Password confirmation</span></div>
+          {{ form.password2 }}
+        </label>
+
+        <button class="btn btn-primary w-full" type="submit">Create account</button>
+      </form>
+
+      <div class="text-sm text-base-content/70 mt-4">
+        Already have an account? <a class="link" href="/accounts/login/">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('input').forEach(i => {
+      i.classList.add('input', 'input-bordered', 'w-full')
+    })
+  </script>
+{% endblock %}
