@@ -11,6 +11,9 @@ class Profile(models.Model):
 	can_fundraise = models.BooleanField(default=False)
 
 	phone = models.CharField(max_length=30, default="")
+	full_name = models.CharField(max_length=200, blank=True, default="")
+	interests = models.TextField(blank=True, default="")
+	avatar_url = models.URLField(blank=True, default="")
 
 	created_at = models.DateTimeField(auto_now_add=True)
 

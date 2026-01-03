@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Q, Sum
 
 from campaigns.models import Campaign
 from groups.models import DonorGroup
@@ -63,3 +64,16 @@ def donate_to_campaign(request: HttpRequest, campaign_id: int) -> HttpResponse:
     return render(request, "donations/partials/donation_panel.html", context)
 
   return redirect("campaigns:detail", campaign_id=campaign.id)
+
+
+@login_required
+def donated_campaigns(request: HttpRequest) -> HttpResponse:
+  campaigns = (
+    Campaign.objects.filter(donations__donor=request.user)
+    .distinct()
+    .annotate(total_donated=Sum("donations__amount", filter=Q(donations__donor=request.user)))
+    .prefetch_related("categories", "tags")
+    .order_by("-created_at")
+  )
+
+  return render(request, "donations/donated_campaigns.html", {"campaigns": campaigns})

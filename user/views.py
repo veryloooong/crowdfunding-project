@@ -34,6 +34,11 @@ def profile(request: HttpRequest) -> HttpResponse:
   if request.method == "POST":
     profile.can_fundraise = request.POST.get("can_fundraise") == "on"
     profile.phone = (request.POST.get("phone") or "").strip()
+
+    profile.full_name = (request.POST.get("full_name") or "").strip()
+    profile.interests = (request.POST.get("interests") or "").strip()
+    profile.avatar_url = (request.POST.get("avatar_url") or "").strip()
+
     profile.save()
 
     request.user.email = (request.POST.get("email") or "").strip()
@@ -48,7 +53,6 @@ def profile(request: HttpRequest) -> HttpResponse:
   return render(request, "user/profile.html", context)
 
 
-@login_required
 def toggle_theme(request: HttpRequest) -> HttpResponse:
   current = request.session.get("ui_theme") or "light"
   request.session["ui_theme"] = "dark" if current == "light" else "light"

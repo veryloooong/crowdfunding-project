@@ -19,8 +19,23 @@
         </label>
 
         <label class="form-control">
+          <div class="label"><span class="label-text">Full name</span></div>
+          <input class="input input-bordered w-full" type="text" name="full_name" value="{{ profile.full_name }}" />
+        </label>
+
+        <label class="form-control">
           <div class="label"><span class="label-text">Phone</span></div>
           <input class="input input-bordered w-full" type="text" name="phone" value="{{ profile.phone }}" required />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Avatar URL (optional)</span></div>
+          <input class="input input-bordered w-full" type="url" name="avatar_url" value="{{ profile.avatar_url }}" placeholder="https://..." />
+        </label>
+
+        <label class="form-control">
+          <div class="label"><span class="label-text">Interests (optional)</span></div>
+          <textarea class="textarea textarea-bordered w-full" name="interests" rows="4" placeholder="e.g. education, medical, environment">{{ profile.interests }}</textarea>
         </label>
 
         <label class="label cursor-pointer justify-start gap-2">

@@ -25,13 +25,30 @@
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
                 <li><a href="/">Campaigns</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="/donations/donated/">Donated</a></li>
+                {% endif %}
                 <li><a href="/groups/">Groups</a></li>
             </ul>
         </div>
 
         <div class="navbar-end gap-2">
             {% if request.user.is_authenticated %}
-                <div class="text-sm opacity-70">User: {{ request.user.username }}</div>
+                <a class="btn btn-ghost btn-circle" href="/accounts/profile/" aria-label="Profile">
+                    {% if nav_profile and nav_profile.avatar_url %}
+                        <div class="avatar">
+                            <div class="w-8 rounded-full">
+                                <img src="{{ nav_profile.avatar_url }}" alt="{{ request.user.username }}" />
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="avatar placeholder">
+                            <div class="bg-neutral text-neutral-content rounded-full w-8">
+                                <span class="text-xs">{{ request.user.username|slice:':1'|upper }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </a>
             {% endif %}
             <a class="btn btn-ghost" href="/accounts/toggle-theme/">Toggle theme</a>
             {% if request.user.is_authenticated %}

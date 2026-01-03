@@ -24,18 +24,16 @@
           <textarea class="textarea textarea-bordered" name="description" rows="6" required></textarea>
         </label>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <label class="form-control">
-            <div class="label"><span class="label-text">Goal amount (VND)</span></div>
-            <input class="input input-bordered" name="goal_amount" type="number" step="1000" min="1000" required />
-          </label>
+        <label class="form-control">
+          <div class="label"><span class="label-text">Goal amount (VND)</span></div>
+          <input class="input input-bordered" name="goal_amount" type="number" step="1000" min="1000" required />
+        </label>
 
-          <label class="form-control">
-            <div class="label"><span class="label-text">End date</span></div>
-            <input class="input input-bordered" name="end_date" type="date" min="{{ today|date:'Y-m-d' }}" required />
-            <div class="label"><span class="label-text-alt">Must be today or later</span></div>
-          </label>
-        </div>
+        <label class="form-control">
+          <div class="label"><span class="label-text">End date</span></div>
+          <input class="input input-bordered" name="end_date" type="date" min="{{ today|date:'Y-m-d' }}" required />
+          <div class="label"><span class="label-text-alt">Must be today or later</span></div>
+        </label>
 
         <label class="form-control">
           <div class="label"><span class="label-text">Categories</span></div>

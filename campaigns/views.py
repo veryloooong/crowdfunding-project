@@ -48,6 +48,7 @@ def _get_or_create_tags(names: list[str]) -> list[Tag]:
 def campaign_list(request: HttpRequest) -> HttpResponse:
   q = (request.GET.get("q") or "").strip()
   category_slug = (request.GET.get("category") or "").strip()
+  tag_q = (request.GET.get("tag") or "").strip()
   sort = (request.GET.get("sort") or "").strip()
 
   campaigns = Campaign.objects.all().prefetch_related("categories", "tags")
@@ -57,6 +58,9 @@ def campaign_list(request: HttpRequest) -> HttpResponse:
 
   if category_slug:
     campaigns = campaigns.filter(categories__slug=category_slug)
+
+  if tag_q:
+    campaigns = campaigns.filter(tags__name__icontains=tag_q).distinct()
 
   if sort == "popular":
     campaigns = campaigns.annotate(total=Sum("donations__amount"), donors=Count("donations__id")).order_by("-total", "-donors")
@@ -72,6 +76,7 @@ def campaign_list(request: HttpRequest) -> HttpResponse:
     "categories": categories,
     "q": q,
     "category": category_slug,
+    "tag": tag_q,
     "sort": sort,
     "today": timezone.localdate(),
   }

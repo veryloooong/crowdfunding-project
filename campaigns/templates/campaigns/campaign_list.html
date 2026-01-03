@@ -8,15 +8,15 @@
       <div class="card-body">
         <h1 class="text-3xl font-bold mb-2">Campaigns</h1>
 
-        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
           <label class="form-control">
             <div class="label"><span class="label-text">Search</span></div>
-            <input class="input input-bordered" type="text" name="q" value="{{ q }}" placeholder="title or description" />
+            <input class="input input-bordered w-full" type="text" name="q" value="{{ q }}" placeholder="title or description" />
           </label>
 
           <label class="form-control">
             <div class="label"><span class="label-text">Category</span></div>
-            <select class="select select-bordered" name="category">
+            <select class="select select-bordered w-full" name="category">
               <option value="">All</option>
               {% for c in categories %}
                 <option value="{{ c.slug }}" {% if category == c.slug %}selected{% endif %}>{{ c.name }}</option>
@@ -25,8 +25,13 @@
           </label>
 
           <label class="form-control">
+            <div class="label"><span class="label-text">Tag</span></div>
+            <input class="input input-bordered w-full" type="text" name="tag" value="{{ tag }}" placeholder="#tag name" />
+          </label>
+
+          <label class="form-control">
             <div class="label"><span class="label-text">Sort</span></div>
-            <select class="select select-bordered" name="sort">
+            <select class="select select-bordered w-full" name="sort">
               <option value="" {% if not sort %}selected{% endif %}>Newest</option>
               <option value="popular" {% if sort == "popular" %}selected{% endif %}>Popular</option>
               <option value="urgent" {% if sort == "urgent" %}selected{% endif %}>Urgent</option>
@@ -64,7 +69,9 @@
                 </h2>
                 <div class="text-sm text-base-content/70">Ends: {{ campaign.end_date }}</div>
               </div>
-              {% if not campaign.is_active %}
+              {% if campaign.is_active %}
+                <div class="badge badge-success">On-going</div>
+              {% else %}
                 <div class="badge badge-neutral">Ended</div>
               {% endif %}
             </div>

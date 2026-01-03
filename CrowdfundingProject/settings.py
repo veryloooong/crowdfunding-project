@@ -77,6 +77,7 @@ TEMPLATES = [
         "django.template.context_processors.request",
         "django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
+        "user.context_processors.nav_profile",
       ],
     },
   },
@@ -141,6 +142,9 @@ LOGOUT_REDIRECT_URL = "/"
 # Theme
 
 DEFAULT_UI_THEME = "light"
+
+# Dev-friendly password reset emails
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
