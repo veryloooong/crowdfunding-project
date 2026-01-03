@@ -6,6 +6,7 @@ from django.db import models
 
 class DonorGroup(models.Model):
   name = models.CharField(max_length=120)
+  image_url = models.URLField(blank=True)
   description = models.TextField(blank=True)
   owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="groups_owned")
   members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="groups_member", blank=True)

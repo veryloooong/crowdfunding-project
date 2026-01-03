@@ -16,8 +16,26 @@
         <div class="flex items-start justify-between gap-4">
           <div>
             <h1 class="text-3xl font-bold">{{ group.name }}</h1>
+
+            {% if group.image_url %}
+              <figure class="mt-3">
+                <img class="rounded-box w-full max-w-xl" src="{{ group.image_url }}" alt="{{ group.name }}" />
+              </figure>
+            {% endif %}
+
             {% if group.description %}
               <p class="text-base text-base-content mt-2">{{ group.description }}</p>
+            {% endif %}
+
+            {% if is_owner %}
+              <div class="mt-4">
+                <form class="flex flex-col md:flex-row gap-2" method="post" action="{% url 'groups:update_image' group.id %}">
+                  {% csrf_token %}
+                  <input class="input input-bordered w-full" name="image_url" value="{{ group.image_url }}" placeholder="Group image URL" />
+                  <button class="btn btn-secondary" type="submit">Update image</button>
+                </form>
+                <div class="text-sm opacity-70 mt-1">Paste an image URL to add/replace the group image.</div>
+              </div>
             {% endif %}
           </div>
 
@@ -71,7 +89,7 @@
             {% for d in donations %}
               <div class="flex items-center justify-between">
                 <div class="text-sm">
-                  <div class="font-semibold">${{ d.amount }}</div>
+                  <div class="font-semibold">{{ d.amount|floatformat:0 }} ₫</div>
                   <div class="text-base-content/70">{{ d.campaign.title }} • {{ d.created_at }}</div>
                 </div>
                 <div class="text-sm text-base-content/70">by {{ d.public_name }}</div>

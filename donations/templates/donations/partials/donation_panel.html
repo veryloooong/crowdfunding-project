@@ -23,7 +23,7 @@
                 <span class="text-base-content/70">via {{ d.group.name }}</span>
               {% endif %}
             </div>
-            <div class="text-sm font-semibold">${{ d.amount }}</div>
+            <div class="text-sm font-semibold">{{ d.amount|floatformat:0 }} ₫</div>
           </div>
         {% empty %}
           <div class="text-sm text-base-content/70">No donations yet.</div>

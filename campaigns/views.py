@@ -33,6 +33,10 @@ def _parse_tags(raw: str) -> list[str]:
   return result
 
 
+def _parse_categories(raw: str) -> list[str]:
+  return _parse_tags(raw)
+
+
 def _get_or_create_tags(names: list[str]) -> list[Tag]:
   tags: list[Tag] = []
   for name in names:
@@ -106,7 +110,9 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
     goal_amount_raw = (request.POST.get("goal_amount") or "").strip()
     end_date_raw = (request.POST.get("end_date") or "").strip()
     selected_categories = request.POST.getlist("categories")
+    categories_text = request.POST.get("categories_text") or ""
     tag_names = _parse_tags(request.POST.get("tags") or "")
+    new_category_names = _parse_categories(categories_text)
 
     if not title or not description or not goal_amount_raw or not end_date_raw:
       messages.error(request, "Please fill in all required fields.")
@@ -127,6 +133,10 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
         if not end_date:
           messages.error(request, "Please provide a valid end date.")
         else:
+          if end_date < timezone.localdate():
+            messages.error(request, "End date must be today or later.")
+            return render(request, "campaigns/campaign_form.html", {"categories": categories, "today": timezone.localdate()})
+
           campaign = Campaign.objects.create(
             created_by=request.user,
             title=title,
@@ -137,6 +147,14 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
           )
           if selected_categories:
             campaign.categories.set(Category.objects.filter(id__in=selected_categories))
+
+          if new_category_names:
+            created = []
+            for name in new_category_names:
+              cat, _ = Category.objects.get_or_create(name=name)
+              created.append(cat)
+            campaign.categories.add(*created)
+
           if tag_names:
             campaign.tags.set(_get_or_create_tags(tag_names))
           messages.success(request, "Campaign created.")
@@ -144,8 +162,26 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
 
   context = {
     "categories": categories,
+    "today": timezone.localdate(),
   }
   return render(request, "campaigns/campaign_form.html", context)
+
+
+@login_required
+def campaign_update_image(request: HttpRequest, campaign_id: int) -> HttpResponse:
+  campaign = get_object_or_404(Campaign, id=campaign_id)
+  if campaign.created_by_id != request.user.id:
+    messages.error(request, "You cannot edit this campaign.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  if request.method != "POST":
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  image_url = (request.POST.get("image_url") or "").strip()
+  campaign.image_url = image_url
+  campaign.save(update_fields=["image_url"])
+  messages.success(request, "Campaign image updated.")
+  return redirect("campaigns:detail", campaign_id=campaign.id)
 
 
 @login_required

@@ -21,12 +21,13 @@ def group_list(request: HttpRequest) -> HttpResponse:
 def group_create(request: HttpRequest) -> HttpResponse:
   if request.method == "POST":
     name = (request.POST.get("name") or "").strip()
+    image_url = (request.POST.get("image_url") or "").strip()
     description = (request.POST.get("description") or "").strip()
 
     if not name:
       messages.error(request, "Group name is required.")
     else:
-      group = DonorGroup.objects.create(name=name, description=description, owner=request.user)
+      group = DonorGroup.objects.create(name=name, image_url=image_url, description=description, owner=request.user)
       group.members.add(request.user)
       messages.success(request, "Group created.")
       return redirect("groups:detail", group_id=group.id)
@@ -49,6 +50,23 @@ def group_detail(request: HttpRequest, group_id: int) -> HttpResponse:
     "is_owner": group.owner_id == request.user.id,
   }
   return render(request, "groups/group_detail.html", context)
+
+
+@login_required
+def group_update_image(request: HttpRequest, group_id: int) -> HttpResponse:
+  group = get_object_or_404(DonorGroup, id=group_id)
+  if group.owner_id != request.user.id:
+    messages.error(request, "Only the group leader can edit the group.")
+    return redirect("groups:detail", group_id=group.id)
+
+  if request.method != "POST":
+    return redirect("groups:detail", group_id=group.id)
+
+  image_url = (request.POST.get("image_url") or "").strip()
+  group.image_url = image_url
+  group.save(update_fields=["image_url"])
+  messages.success(request, "Group image updated.")
+  return redirect("groups:detail", group_id=group.id)
 
 
 @login_required

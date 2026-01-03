@@ -12,8 +12,8 @@
       >
         {% csrf_token %}
         <label class="form-control">
-          <div class="label"><span class="label-text">Amount</span></div>
-          <input class="input input-bordered" name="amount" type="number" step="0.01" min="0" required />
+          <div class="label"><span class="label-text">Amount (VND)</span></div>
+          <input class="input input-bordered" name="amount" type="number" step="1000" min="1000" required />
         </label>
 
         <label class="form-control">

@@ -33,6 +33,17 @@
                 {% endfor %}
               </div>
             {% endif %}
+
+            {% if can_manage %}
+              <div class="mt-4">
+                <form class="flex flex-col md:flex-row gap-2" method="post" action="{% url 'campaigns:update_image' campaign.id %}">
+                  {% csrf_token %}
+                  <input class="input input-bordered w-full" name="image_url" value="{{ campaign.image_url }}" placeholder="Campaign image URL" />
+                  <button class="btn btn-secondary" type="submit">Update image</button>
+                </form>
+                <div class="text-sm opacity-70 mt-1">Paste an image URL to add/replace the campaign image.</div>
+              </div>
+            {% endif %}
           </div>
 
           <div class="w-full md:w-80">
