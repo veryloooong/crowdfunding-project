@@ -54,13 +54,13 @@ crowdfunding-project/
 
 ## Technology Stack
 
-- **Django 5.2.8** - Web framework
-- **django-tailwind 4.4.1** - Tailwind CSS integration
-- **django-htmx 1.26.0** - HTMX support for dynamic interactions
-- **django-browser-reload 1.21.0** - Live reload during development
-- **UV** - Fast Python package manager
+- Django
+- SQLite
+- Tailwind CSS
+- DaisyUI
+- HTMX
 
-## Setup Instructions
+## Development Setup
 
 ### Prerequisites
 
@@ -93,6 +93,13 @@ cd ../..
 
 # Run migrations
 uv run python manage.py migrate
+
+# Set up environment variables for admin account
+cp .env.example .env
+# Edit .env and set your admin credentials
+
+# Create admin account
+uv run python manage.py create_admin
 ```
 
 ### Option 2: Using pip and requirements.txt
@@ -116,7 +123,72 @@ cd ../..
 
 # Run migrations
 python manage.py migrate
+
+# Set up environment variables for admin account
+cp .env.example .env
+# Edit .env and set your admin credentials
+
+# Create admin account
+python manage.py create_admin
 ```
+
+## Admin Account Setup
+
+The project includes a management command to create an admin account from environment variables.
+
+### Method 1: Using Environment Variables (Recommended)
+
+1. **Copy the example environment file:**
+
+```bash
+cp .env.example .env
+```
+
+2. **Edit `.env` and set your admin credentials:**
+
+```bash
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=your_secure_password_here
+ADMIN_EMAIL=admin@example.com
+```
+
+3. **Run the create_admin command:**
+
+```bash
+# With UV
+uv run python manage.py create_admin
+
+# Or with pip
+python manage.py create_admin
+```
+
+### Method 2: Using Command Line Arguments
+
+```bash
+# With UV
+uv run python manage.py create_admin --username admin --password yourpassword --email admin@example.com
+
+# Or with pip
+python manage.py create_admin --username admin --password yourpassword --email admin@example.com
+```
+
+### Method 3: Interactive Prompt
+
+If no credentials are provided, the command will prompt you interactively:
+
+```bash
+uv run python manage.py create_admin
+```
+
+### Accessing the Admin Panel
+
+Once created, you can access the admin panel at:
+
+- **URL**: `http://localhost:8000/admin/`
+- **Username**: The username you configured
+- **Password**: The password you configured
+
+**Security Note**: Always change the default password after first login, especially in production environments.
 
 ## Running the Development Server
 
@@ -276,11 +348,7 @@ All templates have access to Tailwind CSS. Simply use Tailwind classes in your H
 ```html
 <div class="container mx-auto">
   <h1 class="text-4xl font-bold text-blue-600">Hello!</h1>
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-  >
-    Click Me
-  </button>
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Click Me</button>
 </div>
 ```
 
@@ -296,7 +364,10 @@ HTMX is already configured. Add `hx-` attributes to enable dynamic behavior:
 ## Common Django Commands
 
 ```bash
-# Create a superuser for admin panel
+# Create admin account from .env file
+python manage.py create_admin
+
+# Create additional superuser accounts interactively
 python manage.py createsuperuser
 
 # Run tests

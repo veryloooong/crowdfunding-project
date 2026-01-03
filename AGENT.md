@@ -98,3 +98,4 @@ When generating code:
 1.  **Simplicity first:** Do not over-engineer.
 2.  **No React/Next.js:** If I ask for frontend code, give me Django Templates + Tailwind.
 3.  **Config:** If Tailwind config is needed, remember it is done in `settings.py` (Tailwind v4), not `tailwind.config.js`.
+4.  **No random documents:** Stop generating random Markdown documents unless specifically asked for.

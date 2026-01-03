@@ -67,7 +67,7 @@ uv run coverage report
 
 ## Available Tests
 
-### User App Tests (26 tests total)
+### User App Tests (29 tests total)
 
 #### UserModelTests (7 tests)
 
@@ -137,6 +137,20 @@ Tests for user profile functionality:
 
 ```bash
 uv run python manage.py test user.tests.UserProfileTests
+```
+
+#### CreateAdminCommandTests (3 tests)
+
+Tests for the create_admin management command:
+
+- `test_create_admin_with_arguments` - Admin creation with CLI arguments works
+- `test_create_admin_fails_when_user_exists` - Prevents duplicate admin creation
+- `test_create_admin_without_credentials_noinput_fails` - Validates credential requirements
+
+**Run these tests:**
+
+```bash
+uv run python manage.py test user.tests.CreateAdminCommandTests
 ```
 
 ## Writing New Tests

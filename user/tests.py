@@ -1,5 +1,8 @@
+from io import StringIO
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.core.management import call_command
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -395,3 +398,73 @@ class UserProfileTests(TestCase):
     # Should redirect to login
     self.assertEqual(response.status_code, 302)
     self.assertIn("login", response.url)
+
+
+class CreateAdminCommandTests(TestCase):
+  """Test cases for create_admin management command."""
+
+  def test_create_admin_with_arguments(self):
+    """Test creating admin with command-line arguments."""
+    out = StringIO()
+    call_command(
+      "create_admin",
+      "--username=testadmin",
+      "--password=TestPass123!",
+      "--email=testadmin@example.com",
+      "--noinput",
+      stdout=out,
+    )
+
+    # Check that admin was created
+    self.assertTrue(User.objects.filter(username="testadmin").exists())
+    admin = User.objects.get(username="testadmin")
+    self.assertTrue(admin.is_superuser)
+    self.assertTrue(admin.is_staff)
+    self.assertEqual(admin.email, "testadmin@example.com")
+    self.assertTrue(admin.check_password("TestPass123!"))
+    self.assertIn("Successfully created admin user", out.getvalue())
+
+  def test_create_admin_fails_when_user_exists(self):
+    """Test that command skips creation if admin already exists."""
+    # Create admin first
+    User.objects.create_superuser(username="existing", password="pass123")
+
+    out = StringIO()
+    call_command(
+      "create_admin",
+      "--username=existing",
+      "--password=newpass123",
+      "--noinput",
+      stdout=out,
+    )
+
+    # Check that message indicates user already exists
+    self.assertIn("already exists", out.getvalue())
+
+    # Verify password wasn't changed
+    admin = User.objects.get(username="existing")
+    self.assertTrue(admin.check_password("pass123"))
+    self.assertFalse(admin.check_password("newpass123"))
+
+  def test_create_admin_without_credentials_noinput_fails(self):
+    """Test that command fails with --noinput if credentials not provided."""
+    import os
+
+    from django.core.management.base import CommandError
+
+    # Temporarily clear environment variables
+    old_username = os.environ.pop("ADMIN_USERNAME", None)
+    old_password = os.environ.pop("ADMIN_PASSWORD", None)
+    old_email = os.environ.pop("ADMIN_EMAIL", None)
+
+    try:
+      with self.assertRaises(CommandError):
+        call_command("create_admin", "--noinput", stdout=StringIO())
+    finally:
+      # Restore environment variables
+      if old_username:
+        os.environ["ADMIN_USERNAME"] = old_username
+      if old_password:
+        os.environ["ADMIN_PASSWORD"] = old_password
+      if old_email:
+        os.environ["ADMIN_EMAIL"] = old_email
