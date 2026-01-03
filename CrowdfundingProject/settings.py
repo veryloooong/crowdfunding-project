@@ -53,6 +53,7 @@ INSTALLED_APPS = [
   "heroicons",
   # Project apps
   "user",
+  "donor_groups",
   "theme",
 ]
 

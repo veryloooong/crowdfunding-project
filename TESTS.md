@@ -30,6 +30,9 @@ uv run python manage.py test --verbosity=2
 # Run all tests in the user app
 uv run python manage.py test user
 
+# Run all tests in the donor_groups app
+uv run python manage.py test donor_groups
+
 # Run with verbose output
 uv run python manage.py test user --verbosity=2
 ```
@@ -67,7 +70,13 @@ uv run coverage report
 
 ## Available Tests
 
-### User App Tests (29 tests total)
+### Summary
+
+- **User App**: 30 tests
+- **Donor Groups App**: 28 tests
+- **Total**: 58 tests
+
+### User App Tests (30 tests total)
 
 #### UserModelTests (7 tests)
 
@@ -105,7 +114,7 @@ Tests for user registration functionality:
 uv run python manage.py test user.tests.UserRegistrationViewTests
 ```
 
-#### UserLoginViewTests (8 tests)
+#### UserLoginViewTests (9 tests)
 
 Tests for authentication and login:
 
@@ -116,7 +125,8 @@ Tests for authentication and login:
 - `test_donor_can_login` - Donor users can authenticate
 - `test_fundraiser_can_login` - Fundraiser users can authenticate
 - `test_authenticated_user_redirected_from_login` - Logged-in users redirected
-- `test_logout_functionality` - Logout works correctly
+- `test_logout_functionality` - Logout works correctly via POST
+- `test_logout_functionality_get` - Logout works correctly via GET (direct URL access)
 
 **Run these tests:**
 
@@ -151,6 +161,80 @@ Tests for the create_admin management command:
 
 ```bash
 uv run python manage.py test user.tests.CreateAdminCommandTests
+```
+
+### Donor Groups App Tests (28 tests total)
+
+#### DonorGroupModelTest (5 tests)
+
+Tests for the DonorGroup model:
+
+- `test_create_donor_group` - Verifies donor group creation with unique group code
+- `test_group_code_is_unique` - Ensures group codes are unique across groups
+- `test_group_name_required` - Validates that group name is required
+- `test_only_donors_can_be_admin` - Ensures only donors can be group administrators
+- `test_donor_group_str` - Tests string representation of DonorGroup
+
+**Run these tests:**
+
+```bash
+uv run python manage.py test donor_groups.tests.DonorGroupModelTest
+```
+
+#### DonorGroupMembershipModelTest (5 tests)
+
+Tests for the DonorGroupMembership model:
+
+- `test_add_member_to_group` - Verifies adding members to a group
+- `test_admin_automatically_becomes_member` - Ensures admin is added as member on group creation
+- `test_member_uniqueness` - Validates that users can only join a group once
+- `test_only_donors_can_be_members` - Ensures only donors can be group members
+- `test_membership_str` - Tests string representation of membership
+
+**Run these tests:**
+
+```bash
+uv run python manage.py test donor_groups.tests.DonorGroupMembershipModelTest
+```
+
+#### DonorGroupViewTest (14 tests)
+
+Tests for donor group views and user interactions:
+
+- `test_create_group_view_requires_login` - Group creation requires authentication
+- `test_create_group_view_requires_donor` - Only donors can create groups
+- `test_create_group_view_get` - GET request renders create group form
+- `test_create_group_view_post_valid` - POST with valid data creates group
+- `test_create_group_view_post_invalid` - POST with invalid data shows errors
+- `test_group_detail_view` - Group detail page displays correctly
+- `test_group_list_view` - Group list page displays all groups
+- `test_join_group_with_code` - Joining group with valid code works
+- `test_join_group_invalid_code` - Invalid group code is rejected
+- `test_join_group_already_member` - Cannot join group if already a member
+- `test_leave_group` - Members can leave groups
+- `test_admin_cannot_leave_group` - Group admins cannot leave their own group
+- `test_remove_member_as_admin` - Admins can remove members
+- `test_remove_member_as_non_admin` - Non-admins cannot remove members
+
+**Run these tests:**
+
+```bash
+uv run python manage.py test donor_groups.tests.DonorGroupViewTest
+```
+
+#### DonorGroupFormTest (4 tests)
+
+Tests for donor group forms:
+
+- `test_donor_group_form_valid` - Valid form data passes validation
+- `test_donor_group_form_missing_name` - Form validation catches missing name
+- `test_join_group_form_valid` - Valid group code passes validation
+- `test_join_group_form_invalid_code` - Invalid group code fails validation
+
+**Run these tests:**
+
+```bash
+uv run python manage.py test donor_groups.tests.DonorGroupFormTest
 ```
 
 ## Writing New Tests
@@ -280,8 +364,9 @@ As the project grows, tests should be added for:
 
 - Campaign creation and management
 - Donation processing
-- Donor group functionality
+- Donor group donations and tracking
 - Event management
+- Donor-fundraiser pairing
 - Integration tests between apps
 - API endpoints (if added)
 - Performance tests for critical operations

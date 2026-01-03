@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <a href="{% url 'donor_groups:group_list' %}" class="btn btn-sm btn-ghost">
+      ← Back to Groups
+    </a>
+  </div>
+
+  <div class="card bg-neutral shadow-xl mb-6">
+    <div class="card-body">
+      <div class="flex justify-between items-start">
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold mb-4">{{ group.name }}</h1>
+          <p class="text-base-content mb-4">{{ group.description }}</p>
+
+          <div class="text-sm text-base-content opacity-70 space-y-1">
+            <p><strong>Admin:</strong> {{ group.admin.get_full_name|default:group.admin.username }}</p>
+            <p><strong>Members:</strong> {{ memberships.count }}</p>
+            <p><strong>Created:</strong> {{ group.created_at|date:"F d, Y" }}</p>
+            {% if is_admin or is_member %}
+            <p><strong>Group Code:</strong> <span class="badge badge-accent font-mono">{{ group.group_code }}</span></p>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="flex gap-2">
+          {% if is_member and not is_admin %}
+          <form method="post" action="{% url 'donor_groups:leave_group' group.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-error">Leave Group</button>
+          </form>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-neutral shadow-xl">
+    <div class="card-body">
+      <h2 class="text-xl font-semibold mb-4">Members ({{ memberships.count }})</h2>
+
+      {% if memberships %}
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Joined</th>
+              {% if is_admin %}
+              <th>Actions</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for membership in memberships %}
+            <tr>
+              <td>
+                {{ membership.member.get_full_name|default:"—" }}
+                {% if membership.member == group.admin %}
+                <span class="badge badge-primary badge-sm ml-2">Admin</span>
+                {% endif %}
+              </td>
+              <td>{{ membership.member.username }}</td>
+              <td>{{ membership.joined_at|date:"M d, Y" }}</td>
+              {% if is_admin %}
+              <td>
+                {% if membership.member != group.admin %}
+                <form method="post" action="{% url 'donor_groups:remove_member' group.pk membership.member.pk %}" class="inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-xs btn-error" onclick="return confirm('Are you sure you want to remove this member?')">
+                    Remove
+                  </button>
+                </form>
+                {% else %}
+                <span class="text-base-content opacity-50">—</span>
+                {% endif %}
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-base-content opacity-70">No members yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

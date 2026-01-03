@@ -23,20 +23,44 @@ Fundraisers need to provide additional information during registration, includin
 
 - A brief biography or description of themselves.
 
-Donors can create a group of supporters to pool their resources and make larger contributions, create campaigns and events related to such campaigns, and share campaigns on social media to increase visibility. Donor groups can also track their contributions and the impact of their donations. Donor groups can recruit new members to join their cause.
+Donors can create donor groups to pool their resources and support campaigns together. Donor groups can have multiple members. Each donor group has one administrator who created the group, and can invite other donors to join, either via direct invitation or a group code. Donor groups can create campaigns dedicated to a fundraiser, or to a specific cause. When a member of a donor group donates to a campaign, the donation is tracked under the group. On the donor group page, the following info can be viewed:
+
+- Group name and description
+- List of members
+- History of donations made by members on behalf of the group
+- Total amount donated by the group
+
+As a group admin, the user can also:
+
+- Invite new members via direct invitation on the app, or by sharing a group code
+- Remove members from the group
+- View and manage the group's donation history
+- Create campaigns on behalf of the group, dedicated to a fundraiser or cause
+
+On any campaign page, if a donation is made by a donor group, the donation will be marked as from the group, and the group's name will be displayed among the list of donors. As a group member, the user can choose to donate individually or as part of the group with the selection of a checkbox during the donation process.
 
 ## Campaigns
 
-Campaigns are the core feature of the platform. Campaigns can be created by the fundraisers, or by a donor group on behalf of a fundraiser. Each campaign includes:
+Campaigns are the core feature of the platform. Campaigns can be created by the fundraisers, or by a donor group on behalf of a fundraiser. Each campaign page includes:
 
-- A title and description of the cause or need.
+- A title and description of the cause or need. The description can include images and videos and support Markdown formatting.
+- Relevant categories (e.g., medical, education, emergency, community), added during campaign creation.
 - A fundraising goal amount.
 - An end date for the campaign.
-- Updates and progress reports from the fundraiser.
+- The current amount raised so far and the number of donors.
+- A list of recent donations, including donor names (if they choose to be recognized) and amounts.
+- Posts of recent updates from the fundraiser about the campaign progress. These also support Markdown formatting.
 
-Donors can search and filter campaigns based on categories, popularity, and urgency.
+Fundraisers can create and manage their campaigns through a dedicated dashboard, where they can:
 
-Each campaign page displays the total amount raised, the number of donors, and a progress bar showing how close the campaign is to reaching its goal.
+- Create new campaigns by providing the necessary details.
+- Edit existing campaigns to update information or extend the end date.
+- View detailed statistics about donations, donor demographics, and campaign performance.
+- Post updates to keep donors informed about the campaign's progress.
+
+If a donor group created the campaign, the group admin can also manage the campaign similarly. The group can also create donation events, available to the public. An event includes a title, description, date, time, and location, and is linked to the campaign. Users can view events on the campaign page. They can add events to Google Calendar with a click of a button on the event details page.
+
+Donors can search and filter campaigns based on name, category, end date, most recently created, and amount raised. Donors can also sort campaigns by amount raised, end date, and popularity (number of donors).
 
 ## Events
 
@@ -45,12 +69,6 @@ Events can be created to promote campaigns and encourage donations. Events are l
 - Event title and description.
 - Date, time, and location of the event.
 - A link to the associated campaign.
-
-## Donations
-
-Donors can contribute funds to campaigns through a secure payment system. The platform supports various payment methods, including credit/debit cards and digital wallets. Donors can choose to make one-time donations or set up recurring contributions.
-
-Each donation is tracked and displayed publicly on the campaign page, along with the donor's name (if they choose to be recognized). All amounts raised are transparently shown, along with the remaining amount needed to reach the goal.
 
 ## Donor-Fundraiser Pairing
 

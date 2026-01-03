@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Create Donor Group{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="mb-6">
+    <a href="{% url 'donor_groups:group_list' %}" class="btn btn-sm btn-ghost">
+      ← Back to Groups
+    </a>
+  </div>
+
+  <div class="card bg-neutral shadow-xl">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold mb-6">Create Donor Group</h1>
+
+      <form method="post" action="{% url 'donor_groups:create_group' %}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{{ form.non_field_errors }}</span>
+        </div>
+        {% endif %}
+
+        <div class="form-control w-full mb-4">
+          <label class="label" for="{{ form.name.id_for_label }}">
+            <span class="label-text font-semibold">{{ form.name.label }}</span>
+          </label>
+          {{ form.name }}
+          {% if form.name.errors %}
+          <label class="label">
+            <span class="label-text-alt text-error">{{ form.name.errors.0 }}</span>
+          </label>
+          {% endif %}
+          {% if form.name.help_text %}
+          <label class="label">
+            <span class="label-text-alt">{{ form.name.help_text }}</span>
+          </label>
+          {% endif %}
+        </div>
+
+        <div class="form-control w-full mb-6">
+          <label class="label" for="{{ form.description.id_for_label }}">
+            <span class="label-text font-semibold">{{ form.description.label }}</span>
+          </label>
+          {{ form.description }}
+          {% if form.description.errors %}
+          <label class="label">
+            <span class="label-text-alt text-error">{{ form.description.errors.0 }}</span>
+          </label>
+          {% endif %}
+          {% if form.description.help_text %}
+          <label class="label">
+            <span class="label-text-alt">{{ form.description.help_text }}</span>
+          </label>
+          {% endif %}
+        </div>
+
+        <div class="alert alert-info mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <p class="font-semibold">About Donor Groups</p>
+            <p class="text-sm">As the group administrator, you'll receive a unique group code that you can share with other donors to invite them to join your group.</p>
+          </div>
+        </div>
+
+        <div class="card-actions justify-end">
+          <a href="{% url 'donor_groups:group_list' %}" class="btn btn-ghost">Cancel</a>
+          <button type="submit" class="btn btn-primary">Create Group</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -338,11 +338,23 @@ class UserLoginViewTests(TestCase):
     self.assertEqual(response.status_code, 302)
 
   def test_logout_functionality(self):
-    """Test that users can successfully log out."""
+    """Test that users can successfully log out via POST."""
     self.client.login(username="testdonor", password="DonorPass123!")
     logout_url = reverse("user:logout")
 
     response = self.client.post(logout_url)
+
+    self.assertEqual(response.status_code, 302)
+    # After logout, user should not be authenticated
+    response = self.client.get(self.login_url)
+    self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+  def test_logout_functionality_get(self):
+    """Test that users can successfully log out via GET (direct URL access)."""
+    self.client.login(username="testdonor", password="DonorPass123!")
+    logout_url = reverse("user:logout")
+
+    response = self.client.get(logout_url)
 
     self.assertEqual(response.status_code, 302)
     # After logout, user should not be authenticated

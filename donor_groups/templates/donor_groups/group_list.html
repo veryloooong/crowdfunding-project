@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Donor Groups{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Donor Groups</h1>
+    {% if user.is_authenticated and user.userprofile.user_type == "donor" %}
+    <div class="flex gap-2">
+      <a href="{% url 'donor_groups:join_group' %}" class="btn btn-secondary">
+        Join Group
+      </a>
+      <a href="{% url 'donor_groups:create_group' %}" class="btn btn-primary">
+        Create Group
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if groups %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for group in groups %}
+    <div class="card bg-neutral shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">{{ group.name }}</h2>
+        <p class="text-base-content">{{ group.description|truncatewords:20 }}</p>
+        <div class="text-sm text-base-content opacity-70 mt-2">
+          <p>Admin: {{ group.admin.get_full_name|default:group.admin.username }}</p>
+          <p>Members: {{ group.memberships.count }}</p>
+          <p>Created: {{ group.created_at|date:"M d, Y" }}</p>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <a href="{% url 'donor_groups:group_detail' group.pk %}" class="btn btn-sm btn-primary">
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span>No donor groups yet. Be the first to create one!</span>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

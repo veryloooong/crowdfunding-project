@@ -97,12 +97,13 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 
 def logout_view(request: HttpRequest) -> HttpResponse:
-  """Handle user logout."""
-  if request.method == "POST":
-    logout(request)
-    messages.success(request, "You have been logged out successfully.")
-    return redirect("home")
+  """Handle user logout.
 
+  Accepts both GET and POST requests for better UX.
+  POST is preferred for security, but GET allows direct URL access.
+  """
+  logout(request)
+  messages.success(request, "You have been logged out successfully.")
   return redirect("home")
 
 
