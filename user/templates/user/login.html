@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+
+{% block title %}Login - Crowdfunding Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-base-200 flex items-center justify-center py-12 px-4">
+  <div class="max-w-md w-full">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold mb-2">Welcome Back</h1>
+      <p class="text-base-content/70">Login to your account</p>
+    </div>
+
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        {% if form.non_field_errors %}
+          <div class="alert alert-error">
+            <span>Invalid email/username or password.</span>
+          </div>
+        {% endif %}
+        
+        <form method="post" action="{% url 'user:login' %}" class="space-y-4">
+          {% csrf_token %}
+          
+          {{ form.as_p }}
+          
+          <div class="form-control">
+            <button type="submit" class="btn btn-primary btn-lg w-full">Login</button>
+          </div>
+        </form>
+        
+        <div class="divider">OR</div>
+        
+        <div class="text-center">
+          <p class="text-base-content/70">
+            Don't have an account?
+            <a href="{% url 'user:register' %}" class="link link-primary">Register here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

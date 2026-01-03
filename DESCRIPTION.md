@@ -11,7 +11,17 @@ There are two main types of users on the platform:
 - The **fundraisers**, who create campaigns to raise money for their causes or needs.
 - The **donors**, who browse campaigns and contribute funds to support the causes they care about.
 
-All users are required to create an account to participate in fundraising or donating activities. Accounts are created with basic information such as name, email, and password. Fundraisers need to provide additional information about their cause when creating a campaign.
+All users are required to create an account to participate in fundraising or donating activities. If they do not have an account, then they can view campaigns and events but not interact with them (i.e. cannot donate or raise). Accounts are created with basic information such as name, email, phone number, and password. An account needs to choose to be a donor or a fundraiser during the registration process, which cannot be changed later. In detail, the account creation process requires the following fields:
+
+- Full legal name
+- Email address (needs to be validated)
+- Phone number (optional)
+- Password (with strength requirements)
+- User type (donor or fundraiser)
+
+Fundraisers need to provide additional information during registration, including:
+
+- A brief biography or description of themselves.
 
 Donors can create a group of supporters to pool their resources and make larger contributions, create campaigns and events related to such campaigns, and share campaigns on social media to increase visibility. Donor groups can also track their contributions and the impact of their donations. Donor groups can recruit new members to join their cause.
 

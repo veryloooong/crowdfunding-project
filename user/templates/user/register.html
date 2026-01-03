@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+
+{% block title %}Register - Crowdfunding Platform{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-base-200 flex items-center justify-center py-12 px-4">
+  <div class="max-w-2xl w-full">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold mb-2">Create Your Account</h1>
+      <p class="text-base-content/70">Join our community</p>
+    </div>
+
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <form method="post" action="{% url 'user:register' %}" class="space-y-4">
+          {% csrf_token %}
+          
+          {{ form.as_p }}
+          
+          <div class="form-control mt-6">
+            <button type="submit" class="btn btn-primary btn-lg w-full">Create Account</button>
+          </div>
+        </form>
+        
+        <div class="divider">OR</div>
+        
+        <div class="text-center">
+          <p class="text-base-content/70">
+            Already have an account?
+            <a href="{% url 'user:login' %}" class="link link-primary">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
