@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+  <div class="card bg-base-100 max-w-3xl">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold mb-2">Notifications</h1>
+
+      <div class="space-y-2">
+        {% for n in notifications %}
+          <div class="card bg-base-200">
+            <div class="card-body">
+              <div class="text-sm opacity-70">{{ n.created_at }}</div>
+              {% if n.url %}
+                <a class="link link-hover" href="{{ n.url }}">{{ n.message }}</a>
+              {% else %}
+                <div>{{ n.message }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <div class="alert alert-info"><span>No notifications.</span></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

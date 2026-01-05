@@ -58,6 +58,9 @@
         <label class="form-control">
           <div class="label"><span class="label-text">Password</span></div>
           {{ form.password1 }}
+          <div class="label">
+            <span class="label-text-alt opacity-70">Tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.</span>
+          </div>
           {% if form.password1.errors %}
             <div class="label">
               <span class="label-text-alt text-error">

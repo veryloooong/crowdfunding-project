@@ -17,3 +17,23 @@ class DonorGroup(models.Model):
 
   def __str__(self) -> str:
     return self.name
+
+
+class GroupMessage(models.Model):
+  group = models.ForeignKey(DonorGroup, on_delete=models.CASCADE, related_name="messages")
+  sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="group_messages")
+  content = models.TextField()
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  class Meta:
+    ordering = ["-created_at"]
+
+
+class GroupMessageReadState(models.Model):
+  group = models.ForeignKey(DonorGroup, on_delete=models.CASCADE, related_name="message_reads")
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="group_message_reads")
+  last_read_message_id = models.BigIntegerField(default=0)
+  updated_at = models.DateTimeField(auto_now=True)
+
+  class Meta:
+    unique_together = [("group", "user")]

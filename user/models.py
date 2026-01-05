@@ -24,3 +24,29 @@ class Profile(models.Model):
 
 	def __str__(self) -> str:
 		return f"Profile({self.user_id})"
+
+
+class Notification(models.Model):
+	KIND_GROUP_ADDED = "group_added"
+	KIND_DONATION = "donation"
+	KIND_GROUP_MESSAGES = "group_messages"
+
+	KIND_CHOICES = [
+		(KIND_GROUP_ADDED, "Group added"),
+		(KIND_DONATION, "Donation"),
+		(KIND_GROUP_MESSAGES, "Group messages"),
+	]
+
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
+	kind = models.CharField(max_length=40, choices=KIND_CHOICES)
+	message = models.TextField()
+	url = models.CharField(max_length=300, blank=True, default="")
+	group = models.ForeignKey("groups.DonorGroup", on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")
+	is_read = models.BooleanField(default=False)
+	created_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["-created_at"]
+
+	def __str__(self) -> str:
+		return f"Notification({self.user_id}, {self.kind}, read={self.is_read})"

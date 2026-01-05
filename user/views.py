@@ -7,7 +7,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import SignUpForm
-from .models import Profile
+from .models import Notification, Profile
 
 
 def signup(request: HttpRequest) -> HttpResponse:
@@ -54,11 +54,21 @@ def profile(request: HttpRequest) -> HttpResponse:
 
 
 def toggle_theme(request: HttpRequest) -> HttpResponse:
-  current = request.session.get("ui_theme") or "light"
-  request.session["ui_theme"] = "dark" if current == "light" else "light"
+  current = request.COOKIES.get("ui_theme") or request.session.get("ui_theme") or "light"
+  new_theme = "dark" if current == "light" else "light"
+  request.session["ui_theme"] = new_theme
 
   next_url = request.GET.get("next") or request.META.get("HTTP_REFERER") or "/"
-  return redirect(next_url)
+  response = redirect(next_url)
+  response.set_cookie("ui_theme", new_theme, max_age=60 * 60 * 24 * 365, samesite="Lax")
+  return response
+
+
+@login_required
+def notifications(request: HttpRequest) -> HttpResponse:
+  items = Notification.objects.filter(user=request.user).order_by("-created_at")[:50]
+  Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+  return render(request, "user/notifications.html", {"notifications": items})
 
 
 def hello_user(request):

@@ -11,6 +11,7 @@ urlpatterns = [
   path("signup/", views.signup, name="signup"),
   path("profile/", views.profile, name="profile"),
   path("toggle-theme/", views.toggle_theme, name="toggle_theme"),
+  path("notifications/", views.notifications, name="notifications"),
 
   path(
     "password-reset/",

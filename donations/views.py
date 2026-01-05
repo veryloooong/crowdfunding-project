@@ -10,6 +10,7 @@ from django.db.models import Q, Sum
 
 from campaigns.models import Campaign
 from groups.models import DonorGroup
+from user.models import Notification
 
 from .models import Donation
 
@@ -55,6 +56,14 @@ def donate_to_campaign(request: HttpRequest, campaign_id: int) -> HttpResponse:
     is_anonymous=is_anonymous,
     display_name=display_name,
   )
+
+  if campaign.created_by_id and campaign.created_by_id != request.user.id:
+    Notification.objects.create(
+      user=campaign.created_by,
+      kind=Notification.KIND_DONATION,
+      message=f"Chiến dịch '{campaign.title}' vừa nhận được một lượt ủng hộ mới.",
+      url=f"/campaigns/{campaign.id}/",
+    )
 
   messages.success(request, "Thank you for your donation.")
 
