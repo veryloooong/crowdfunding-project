@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone as dt_timezone
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from urllib.parse import urlencode
 
 from django.contrib import messages
@@ -16,6 +16,29 @@ from donations.models import Donation
 from user.models import Profile
 
 from .models import Campaign, Category, Tag, CampaignUpdate, Event
+
+
+def _decimal_field_max_value(model_cls: type[object], field_name: str) -> Decimal:
+  field = model_cls._meta.get_field(field_name)
+  max_digits = int(getattr(field, "max_digits"))
+  decimal_places = int(getattr(field, "decimal_places", 0))
+  integer_digits = max_digits - decimal_places
+  if integer_digits <= 0:
+    return Decimal("0")
+
+  if decimal_places <= 0:
+    return (Decimal(10) ** integer_digits) - Decimal(1)
+
+  return (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
+
+
+def _quantize_to_field(value: Decimal, model_cls: type[object], field_name: str) -> Decimal:
+  field = model_cls._meta.get_field(field_name)
+  decimal_places = int(getattr(field, "decimal_places", 0))
+  if decimal_places <= 0:
+    return value.quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+  quant = Decimal(1).scaleb(-decimal_places)
+  return value.quantize(quant, rounding=ROUND_HALF_UP)
 
 
 def _parse_tags(raw: str) -> list[str]:
@@ -63,7 +86,19 @@ def campaign_list(request: HttpRequest) -> HttpResponse:
     campaigns = campaigns.filter(tags__name__icontains=tag_q).distinct()
 
   if sort == "popular":
-    campaigns = campaigns.annotate(total=Sum("donations__amount"), donors=Count("donations__id")).order_by("-total", "-donors")
+    max_amount = _decimal_field_max_value(Donation, "amount")
+    donation_filter = Q()
+    if max_amount > 0:
+      donation_filter &= Q(donations__amount__lte=max_amount)
+
+    campaigns = (
+      campaigns
+      .annotate(
+        total=Sum("donations__amount", filter=donation_filter),
+        donors=Count("donations__id", filter=donation_filter),
+      )
+      .order_by("-total", "-donors")
+    )
   elif sort == "urgent":
     campaigns = campaigns.order_by("end_date")
   else:
@@ -89,7 +124,11 @@ def campaign_detail(request: HttpRequest, campaign_id: int) -> HttpResponse:
     id=campaign_id,
   )
 
-  donations = Donation.objects.filter(campaign=campaign).select_related("donor", "group")[:10]
+  max_amount = _decimal_field_max_value(Donation, "amount")
+  donations_qs = Donation.objects.filter(campaign=campaign)
+  if max_amount > 0:
+    donations_qs = donations_qs.filter(amount__lte=max_amount)
+  donations = donations_qs.select_related("donor", "group")[:10]
 
   context = {
     "campaign": campaign,
@@ -124,13 +163,18 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
       messages.error(request, "Please fill in all required fields.")
     else:
       try:
-        goal_amount = Decimal(goal_amount_raw)
-      except Exception:
+        goal_amount = _quantize_to_field(Decimal(goal_amount_raw), Campaign, "goal_amount")
+      except (InvalidOperation, ValueError, TypeError):
         goal_amount = Decimal("0")
 
       if goal_amount <= 0:
         messages.error(request, "Goal amount must be greater than 0.")
       else:
+        max_goal = _decimal_field_max_value(Campaign, "goal_amount")
+        if max_goal > 0 and goal_amount > max_goal:
+          messages.error(request, "Goal amount is too large.")
+          return render(request, "campaigns/campaign_form.html", {"categories": categories, "today": timezone.localdate()})
+
         try:
           end_date = date.fromisoformat(end_date_raw)
         except Exception:

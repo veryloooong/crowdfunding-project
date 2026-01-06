@@ -16,7 +16,7 @@
         {% csrf_token %}
         <label class="form-control">
           <div class="label"><span class="label-text">{% trans "Amount (VND)" %}</span></div>
-          <input class="input input-bordered w-full" name="amount" type="number" step="1000" min="1000" required />
+          <input class="input input-bordered w-full" name="amount" type="number" step="1000" min="1000" max="9999999999999999" required />
         </label>
 
         <label class="form-control">

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,6 +13,29 @@ from groups.models import DonorGroup
 from user.models import Notification
 
 from .models import Donation
+
+
+def _decimal_field_max_value(model_cls: type[object], field_name: str) -> Decimal:
+  field = model_cls._meta.get_field(field_name)
+  max_digits = int(getattr(field, "max_digits"))
+  decimal_places = int(getattr(field, "decimal_places", 0))
+  integer_digits = max_digits - decimal_places
+  if integer_digits <= 0:
+    return Decimal("0")
+
+  if decimal_places <= 0:
+    return (Decimal(10) ** integer_digits) - Decimal(1)
+
+  return (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
+
+
+def _quantize_to_field(value: Decimal, model_cls: type[object], field_name: str) -> Decimal:
+  field = model_cls._meta.get_field(field_name)
+  decimal_places = int(getattr(field, "decimal_places", 0))
+  if decimal_places <= 0:
+    return value.quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+  quant = Decimal(1).scaleb(-decimal_places)
+  return value.quantize(quant, rounding=ROUND_HALF_UP)
 
 
 @login_required
@@ -36,12 +59,17 @@ def donate_to_campaign(request: HttpRequest, campaign_id: int) -> HttpResponse:
   group_id = (request.POST.get("group_id") or "").strip()
 
   try:
-    amount = Decimal(amount_raw)
-  except Exception:
+    amount = _quantize_to_field(Decimal(amount_raw), Donation, "amount")
+  except (InvalidOperation, ValueError, TypeError):
     amount = Decimal("0")
 
   if amount <= 0:
     messages.error(request, "Donation amount must be greater than 0.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  max_amount = _decimal_field_max_value(Donation, "amount")
+  if max_amount > 0 and amount > max_amount:
+    messages.error(request, "Donation amount is too large.")
     return redirect("campaigns:detail", campaign_id=campaign.id)
 
   group = None
@@ -77,10 +105,15 @@ def donate_to_campaign(request: HttpRequest, campaign_id: int) -> HttpResponse:
 
 @login_required
 def donated_campaigns(request: HttpRequest) -> HttpResponse:
+  max_amount = _decimal_field_max_value(Donation, "amount")
+  donation_filter = Q(donations__donor=request.user)
+  if max_amount > 0:
+    donation_filter &= Q(donations__amount__lte=max_amount)
+
   campaigns = (
     Campaign.objects.filter(donations__donor=request.user)
     .distinct()
-    .annotate(total_donated=Sum("donations__amount", filter=Q(donations__donor=request.user)))
+    .annotate(total_donated=Sum("donations__amount", filter=donation_filter))
     .prefetch_related("categories", "tags")
     .order_by("-created_at")
   )

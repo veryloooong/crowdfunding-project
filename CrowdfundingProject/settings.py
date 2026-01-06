@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure--fe9y-i+e@!v)mz75j%19ro@&fw56z8v_$qv7l&9&v=$pp$m7j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'uncongregated-placidly-milan.ngrok-free.dev']
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://uncongregated-placidly-milan.ngrok-free.dev",
+]
 
 # Tailwind
 

@@ -9,7 +9,7 @@ class Donation(models.Model):
   donor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="donations")
   group = models.ForeignKey("groups.DonorGroup", on_delete=models.SET_NULL, null=True, blank=True, related_name="donations")
 
-  amount = models.DecimalField(max_digits=12, decimal_places=2)
+  amount = models.DecimalField(max_digits=18, decimal_places=2)
   is_anonymous = models.BooleanField(default=False)
   display_name = models.CharField(max_length=120, blank=True)
 

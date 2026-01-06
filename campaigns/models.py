@@ -46,7 +46,7 @@ class Campaign(models.Model):
   donate_qr_image_url = models.URLField(blank=True)
   image_url = models.URLField(blank=True)
   description = models.TextField()
-  goal_amount = models.DecimalField(max_digits=12, decimal_places=2)
+  goal_amount = models.DecimalField(max_digits=18, decimal_places=2)
   end_date = models.DateField()
   categories = models.ManyToManyField(Category, blank=True, related_name="campaigns")
   tags = models.ManyToManyField(Tag, blank=True, related_name="campaigns")
@@ -61,12 +61,34 @@ class Campaign(models.Model):
 
   @property
   def total_raised(self) -> Decimal:
-    total = self.donations.aggregate(total=models.Sum("amount")).get("total")
+    donation_model = self.donations.model
+    amount_field = donation_model._meta.get_field("amount")
+    max_digits = int(getattr(amount_field, "max_digits"))
+    decimal_places = int(getattr(amount_field, "decimal_places", 0))
+    integer_digits = max_digits - decimal_places
+    if integer_digits > 0:
+      max_amount = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
+      qs = self.donations.filter(amount__lte=max_amount)
+    else:
+      qs = self.donations.all()
+
+    total = qs.aggregate(total=models.Sum("amount")).get("total")
     return total or Decimal("0")
 
   @property
   def donor_count(self) -> int:
-    return self.donations.values("donor_id").distinct().count()
+    donation_model = self.donations.model
+    amount_field = donation_model._meta.get_field("amount")
+    max_digits = int(getattr(amount_field, "max_digits"))
+    decimal_places = int(getattr(amount_field, "decimal_places", 0))
+    integer_digits = max_digits - decimal_places
+    if integer_digits > 0:
+      max_amount = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
+      qs = self.donations.filter(amount__lte=max_amount)
+    else:
+      qs = self.donations.all()
+
+    return qs.values("donor_id").distinct().count()
 
   @property
   def progress_percent(self) -> int:

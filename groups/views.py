@@ -44,7 +44,17 @@ def group_detail(request: HttpRequest, group_id: int) -> HttpResponse:
     messages.error(request, "You are not a member of this group.")
     return redirect("groups:list")
 
-  donations = Donation.objects.filter(group=group).select_related("campaign", "donor")[:20]
+  # Guard against previously-stored out-of-range amounts (e.g. scientific-notation floats)
+  # which can crash SQLite Decimal conversion on read.
+  max_amount = Donation._meta.get_field("amount").max_digits
+  decimal_places = Donation._meta.get_field("amount").decimal_places
+  integer_digits = int(max_amount) - int(decimal_places)
+  donations_qs = Donation.objects.filter(group=group)
+  if integer_digits > 0:
+    from decimal import Decimal
+    max_value = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** int(decimal_places)))
+    donations_qs = donations_qs.filter(amount__lte=max_value)
+  donations = donations_qs.select_related("campaign", "donor")[:20]
 
   messages_qs = GroupMessage.objects.filter(group=group).select_related("sender").order_by("-created_at")[:50]
   messages_list = list(messages_qs)
