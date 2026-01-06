@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}{{ campaign.title }}{% endblock %}
 
@@ -6,7 +7,7 @@
   <div class="flex flex-col gap-4">
     <div class="breadcrumbs text-sm">
       <ul>
-        <li><a href="/">Campaigns</a></li>
+        <li><a href="/">{% trans "Campaigns" %}</a></li>
         <li>{{ campaign.title }}</li>
       </ul>
     </div>
@@ -16,7 +17,7 @@
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
             <h1 class="text-3xl font-bold mb-2">{{ campaign.title }}</h1>
-            <div class="text-sm text-base-content/70">Ends: {{ campaign.end_date }}</div>
+            <div class="text-sm text-base-content/70">{% trans "Ends" %}: {{ campaign.end_date }}</div>
 
             {% if campaign.categories.all %}
               <div class="mt-2 flex flex-wrap gap-2">
@@ -38,16 +39,25 @@
               <div class="mt-4">
                 <form class="flex flex-col md:flex-row gap-2" method="post" action="{% url 'campaigns:update_image' campaign.id %}">
                   {% csrf_token %}
-                  <input class="input input-bordered w-full" name="image_url" value="{{ campaign.image_url }}" placeholder="Campaign image URL" />
-                  <button class="btn btn-secondary" type="submit">Update image</button>
+                  <input class="input input-bordered w-full" name="image_url" value="{{ campaign.image_url }}" placeholder="{% trans 'Campaign image URL' %}" />
+                  <button class="btn btn-secondary" type="submit">{% trans "Update image" %}</button>
                 </form>
-                <div class="text-sm opacity-70 mt-1">Paste an image URL to add/replace the campaign image.</div>
+                <div class="text-sm opacity-70 mt-1">{% trans "Paste an image URL to add/replace the campaign image." %}</div>
+
+                <form class="flex flex-col md:flex-row gap-2 mt-3" method="post" action="{% url 'campaigns:update_donate_qr' campaign.id %}">
+                  {% csrf_token %}
+                  <input class="input input-bordered w-full" name="donate_qr_image_url" value="{{ campaign.donate_qr_image_url }}" placeholder="{% trans 'Donate QR image URL' %}" />
+                  <button class="btn btn-secondary" type="submit">{% trans "Update donate QR" %}</button>
+                </form>
+                <div class="text-sm opacity-70 mt-1">{% trans "Paste a QR image URL to add/replace the donate QR." %}</div>
               </div>
             {% endif %}
           </div>
 
           <div class="w-full md:w-80">
-            {% include "campaigns/partials/progress.html" with campaign=campaign %}
+            <div>
+              {% include "campaigns/partials/progress.html" with campaign=campaign %}
+            </div>
             <div class="mt-3">
               {% include "donations/partials/donation_panel.html" with campaign=campaign donations=donations disable_donate=can_manage %}
             </div>
@@ -72,15 +82,15 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="card bg-base-100">
         <div class="card-body">
-          <h2 class="text-xl font-semibold mb-2">Updates</h2>
+          <h2 class="text-xl font-semibold mb-2">{% trans "Updates" %}</h2>
 
           {% if can_manage %}
             <form method="post" action="{% url 'campaigns:add_update' campaign.id %}" class="space-y-2">
               {% csrf_token %}
-              <input class="input input-bordered w-full" name="title" placeholder="Update title" required />
-              <textarea class="textarea textarea-bordered w-full" name="content_md" rows="5" placeholder="Write an update (Markdown supported)" required></textarea>
-              <input class="input input-bordered w-full" name="image_url" type="url" placeholder="Image URL (optional)" />
-              <button class="btn btn-secondary" type="submit">Post update</button>
+              <input class="input input-bordered w-full" name="title" placeholder="{% trans 'Update title' %}" required />
+              <textarea class="textarea textarea-bordered w-full" name="content_md" rows="5" placeholder="{% trans 'Write an update (Markdown supported)' %}" required></textarea>
+              <input class="input input-bordered w-full" name="image_url" type="url" placeholder="{% trans 'Image URL (optional)' %}" />
+              <button class="btn btn-secondary" type="submit">{% trans "Post update" %}</button>
             </form>
             <div class="divider"></div>
           {% endif %}
@@ -94,7 +104,7 @@
                 </div>
               </div>
             {% empty %}
-              <div class="alert alert-info"><span>No updates yet.</span></div>
+              <div class="alert alert-info"><span>{% trans "No updates yet." %}</span></div>
             {% endfor %}
           </div>
         </div>
@@ -103,9 +113,9 @@
       <div class="card bg-base-100">
         <div class="card-body">
           <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold">Events</h2>
+            <h2 class="text-xl font-semibold">{% trans "Events" %}</h2>
             {% if can_manage %}
-              <a class="btn btn-secondary btn-sm" href="/campaigns/{{ campaign.id }}/events/new/">Create event</a>
+              <a class="btn btn-secondary btn-sm" href="/campaigns/{{ campaign.id }}/events/new/">{% trans "Create event" %}</a>
             {% endif %}
           </div>
 
@@ -126,7 +136,7 @@
                 </div>
               </div>
             {% empty %}
-              <div class="alert alert-info"><span>No events.</span></div>
+              <div class="alert alert-info"><span>{% trans "No events." %}</span></div>
             {% endfor %}
           </div>
         </div>
@@ -135,12 +145,12 @@
 
     <div class="card bg-base-100">
       <div class="card-body">
-        <h2 class="text-xl font-semibold mb-2">Share</h2>
+        <h2 class="text-xl font-semibold mb-2">{% trans "Share" %}</h2>
         <div class="flex flex-col md:flex-row gap-2">
           <input class="input input-bordered w-full" value="{{ request.build_absolute_uri }}" readonly />
-          <a class="btn btn-ghost" href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noreferrer">Share</a>
+          <a class="btn btn-ghost" href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noreferrer">{% trans "Share" %}</a>
         </div>
-        <div class="text-sm text-base-content/70 mt-2">Sharing uses simple links (no third-party integration in demo).</div>
+        <div class="text-sm text-base-content/70 mt-2">{% trans "Sharing uses simple links (no third-party integration in demo)." %}</div>
       </div>
     </div>
   </div>

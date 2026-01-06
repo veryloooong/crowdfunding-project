@@ -111,6 +111,7 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
   if request.method == "POST":
     title = (request.POST.get("title") or "").strip()
     image_url = (request.POST.get("image_url") or "").strip()
+    donate_qr_image_url = (request.POST.get("donate_qr_image_url") or "").strip()
     description = (request.POST.get("description") or "").strip()
     goal_amount_raw = (request.POST.get("goal_amount") or "").strip()
     end_date_raw = (request.POST.get("end_date") or "").strip()
@@ -146,6 +147,7 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
             created_by=request.user,
             title=title,
             image_url=image_url,
+            donate_qr_image_url=donate_qr_image_url,
             description=description,
             goal_amount=goal_amount,
             end_date=end_date,
@@ -186,6 +188,23 @@ def campaign_update_image(request: HttpRequest, campaign_id: int) -> HttpRespons
   campaign.image_url = image_url
   campaign.save(update_fields=["image_url"])
   messages.success(request, "Campaign image updated.")
+  return redirect("campaigns:detail", campaign_id=campaign.id)
+
+
+@login_required
+def campaign_update_donate_qr(request: HttpRequest, campaign_id: int) -> HttpResponse:
+  campaign = get_object_or_404(Campaign, id=campaign_id)
+  if campaign.created_by_id != request.user.id:
+    messages.error(request, "You cannot edit this campaign.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  if request.method != "POST":
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  donate_qr_image_url = (request.POST.get("donate_qr_image_url") or "").strip()
+  campaign.donate_qr_image_url = donate_qr_image_url
+  campaign.save(update_fields=["donate_qr_image_url"])
+  messages.success(request, "Donate QR updated.")
   return redirect("campaigns:detail", campaign_id=campaign.id)
 
 

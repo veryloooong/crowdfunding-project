@@ -43,6 +43,7 @@ class Tag(models.Model):
 class Campaign(models.Model):
   created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="campaigns")
   title = models.CharField(max_length=200)
+  donate_qr_image_url = models.URLField(blank=True)
   image_url = models.URLField(blank=True)
   description = models.TextField()
   goal_amount = models.DecimalField(max_digits=12, decimal_places=2)

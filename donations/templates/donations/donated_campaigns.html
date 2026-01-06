@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Donated{% endblock %}
+{% block title %}{% trans "Donated" %}{% endblock %}
 
 {% block content %}
   <div class="flex flex-col gap-4">
     <div class="card bg-base-100">
       <div class="card-body">
-        <h1 class="text-3xl font-bold">Donated</h1>
-        <div class="text-base-content/70">Campaigns you have donated to.</div>
+        <h1 class="text-3xl font-bold">{% trans "Donated" %}</h1>
+        <div class="text-base-content/70">{% trans "Campaigns you have donated to." %}</div>
       </div>
     </div>
 
@@ -20,12 +21,12 @@
                 <h2 class="text-xl font-semibold mb-1">
                   <a class="link link-hover" href="/campaigns/{{ campaign.id }}/">{{ campaign.title }}</a>
                 </h2>
-                <div class="text-sm text-base-content/70">Total donated: {{ campaign.total_donated|floatformat:0 }} ₫</div>
+                <div class="text-sm text-base-content/70">{% trans "Total donated" %}: {{ campaign.total_donated|floatformat:0 }} ₫</div>
               </div>
               {% if campaign.is_active %}
-                <div class="badge badge-success">On-going</div>
+                <div class="badge badge-success">{% trans "On-going" %}</div>
               {% else %}
-                <div class="badge badge-neutral">Ended</div>
+                <div class="badge badge-neutral">{% trans "Ended" %}</div>
               {% endif %}
             </div>
 
@@ -36,14 +37,14 @@
             </div>
 
             <div class="card-actions justify-end mt-4">
-              <a class="btn btn-primary" href="/campaigns/{{ campaign.id }}/">View</a>
+              <a class="btn btn-primary" href="/campaigns/{{ campaign.id }}/">{% trans "View" %}</a>
             </div>
           </div>
         </div>
       {% empty %}
         <div class="card bg-base-100 md:col-span-2">
           <div class="card-body">
-            <div class="alert alert-info"><span>You have not donated to any campaigns yet.</span></div>
+            <div class="alert alert-info"><span>{% trans "You have not donated to any campaigns yet." %}</span></div>
           </div>
         </div>
       {% endfor %}

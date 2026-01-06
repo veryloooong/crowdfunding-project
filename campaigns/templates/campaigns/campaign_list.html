@@ -1,23 +1,24 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Campaigns{% endblock %}
+{% block title %}{% trans "Campaigns" %}{% endblock %}
 
 {% block content %}
   <div class="flex flex-col gap-4">
     <div class="card bg-base-100">
       <div class="card-body">
-        <h1 class="text-3xl font-bold mb-2">Campaigns</h1>
+        <h1 class="text-3xl font-bold mb-2">{% trans "Campaigns" %}</h1>
 
         <form method="get" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
           <label class="form-control">
-            <div class="label"><span class="label-text">Search</span></div>
-            <input class="input input-bordered w-full" type="text" name="q" value="{{ q }}" placeholder="title or description" />
+            <div class="label"><span class="label-text">{% trans "Search" %}</span></div>
+            <input class="input input-bordered w-full" type="text" name="q" value="{{ q }}" placeholder="{% trans 'title or description' %}" />
           </label>
 
           <label class="form-control">
-            <div class="label"><span class="label-text">Category</span></div>
+            <div class="label"><span class="label-text">{% trans "Category" %}</span></div>
             <select class="select select-bordered w-full" name="category">
-              <option value="">All</option>
+              <option value="">{% trans "All" %}</option>
               {% for c in categories %}
                 <option value="{{ c.slug }}" {% if category == c.slug %}selected{% endif %}>{{ c.name }}</option>
               {% endfor %}
@@ -25,28 +26,28 @@
           </label>
 
           <label class="form-control">
-            <div class="label"><span class="label-text">Tag</span></div>
-            <input class="input input-bordered w-full" type="text" name="tag" value="{{ tag }}" placeholder="#tag name" />
+            <div class="label"><span class="label-text">{% trans "Tag" %}</span></div>
+            <input class="input input-bordered w-full" type="text" name="tag" value="{{ tag }}" placeholder="{% trans '#tag name' %}" />
           </label>
 
           <label class="form-control">
-            <div class="label"><span class="label-text">Sort</span></div>
+            <div class="label"><span class="label-text">{% trans "Sort" %}</span></div>
             <select class="select select-bordered w-full" name="sort">
-              <option value="" {% if not sort %}selected{% endif %}>Newest</option>
-              <option value="popular" {% if sort == "popular" %}selected{% endif %}>Popular</option>
-              <option value="urgent" {% if sort == "urgent" %}selected{% endif %}>Urgent</option>
+              <option value="" {% if not sort %}selected{% endif %}>{% trans "Newest" %}</option>
+              <option value="popular" {% if sort == "popular" %}selected{% endif %}>{% trans "Popular" %}</option>
+              <option value="urgent" {% if sort == "urgent" %}selected{% endif %}>{% trans "Urgent" %}</option>
             </select>
           </label>
 
           <div class="flex items-end gap-2">
-            <button class="btn btn-primary" type="submit">Apply</button>
-            <a class="btn btn-ghost" href="/">Reset</a>
+            <button class="btn btn-primary" type="submit">{% trans "Apply" %}</button>
+            <a class="btn btn-ghost" href="/">{% trans "Reset" %}</a>
           </div>
         </form>
 
         {% if request.user.is_authenticated %}
           <div class="mt-4">
-            <a class="btn btn-secondary" href="/campaigns/new/">Create campaign</a>
+            <a class="btn btn-secondary" href="/campaigns/new/">{% trans "Create campaign" %}</a>
           </div>
         {% endif %}
       </div>
@@ -67,12 +68,12 @@
                 <h2 class="text-xl font-semibold mb-1">
                   <a class="link link-hover" href="/campaigns/{{ campaign.id }}/">{{ campaign.title }}</a>
                 </h2>
-                <div class="text-sm text-base-content/70">Ends: {{ campaign.end_date }}</div>
+                <div class="text-sm text-base-content/70">{% trans "Ends" %}: {{ campaign.end_date }}</div>
               </div>
               {% if campaign.is_active %}
-                <div class="badge badge-success">On-going</div>
+                <div class="badge badge-success">{% trans "On-going" %}</div>
               {% else %}
-                <div class="badge badge-neutral">Ended</div>
+                <div class="badge badge-neutral">{% trans "Ended" %}</div>
               {% endif %}
             </div>
 
@@ -99,14 +100,14 @@
             {% endif %}
 
             <div class="card-actions justify-end mt-4">
-              <a class="btn btn-primary" href="/campaigns/{{ campaign.id }}/">View</a>
+              <a class="btn btn-primary" href="/campaigns/{{ campaign.id }}/">{% trans "View" %}</a>
             </div>
           </div>
         </div>
       {% empty %}
         <div class="card bg-base-100 md:col-span-2">
           <div class="card-body">
-            <div class="alert alert-info"><span>No campaigns found.</span></div>
+            <div class="alert alert-info"><span>{% trans "No campaigns found." %}</span></div>
           </div>
         </div>
       {% endfor %}

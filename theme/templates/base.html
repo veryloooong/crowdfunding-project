@@ -1,6 +1,7 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en" data-theme="{{ ui_theme|default:'light' }}">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ ui_theme|default:'light' }}">
 <head>
     <title>{% block title %}Crowdfunding{% endblock %}</title>
     <meta charset="UTF-8">
@@ -19,24 +20,50 @@
     <div class="relative z-10">
     <div class="navbar bg-base-100">
         <div class="navbar-start">
-            <a class="btn btn-ghost text-lg" href="/">Crowdfunding</a>
+            <a class="btn btn-ghost text-lg" href="/">{% trans "Crowdfunding" %}</a>
         </div>
 
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a href="/">Campaigns</a></li>
+                <li><a href="/">{% trans "Campaigns" %}</a></li>
                 {% if request.user.is_authenticated %}
-                    <li><a href="/donations/donated/">Donated</a></li>
+                    <li><a href="/donations/donated/">{% trans "Donated" %}</a></li>
                 {% endif %}
-                <li><a href="/groups/">Groups</a></li>
+                <li><a href="/groups/">{% trans "Groups" %}</a></li>
             </ul>
         </div>
 
         <div class="navbar-end gap-2">
-            <a class="btn btn-ghost" href="/accounts/toggle-theme/">Toggle theme</a>
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="{% trans 'Translate' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.486 2 2 6.037 2 11c0 2.638 1.248 5.01 3.25 6.65L4 22l4.732-2.37C9.76 19.87 10.86 20 12 20c5.514 0 10-4.037 10-9s-4.486-9-10-9zm0 16c-1.02 0-2.014-.12-2.96-.356L7.1 18.6l.56-2.62-1.63-1.23C4.83 13.65 4 12.37 4 11c0-3.86 3.59-7 8-7s8 3.14 8 7-3.59 7-8 7z" />
+                    </svg>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-10 w-40 p-2 shadow">
+                    <li>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                            <input type="hidden" name="language" value="en" />
+                            <button class="w-full text-left" type="submit">English</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                            <input type="hidden" name="language" value="vi" />
+                            <button class="w-full text-left" type="submit">Tiếng Việt</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            <a class="btn btn-ghost" href="/accounts/toggle-theme/">{% trans "Toggle theme" %}</a>
 
             {% if request.user.is_authenticated %}
-                <a class="btn btn-ghost btn-circle relative" href="/accounts/notifications/" aria-label="Notifications">
+                <a class="btn btn-ghost btn-circle relative" href="/accounts/notifications/" aria-label="{% trans 'Notifications' %}">
                     {% if unread_notifications_count|default:0|add:0 > 0 %}
                         <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     {% endif %}
@@ -46,7 +73,11 @@
                     </svg>
                 </a>
 
-                <a class="btn btn-ghost btn-circle" href="/accounts/profile/" aria-label="Profile">
+                {% if request.user.is_staff or request.user.is_superuser %}
+                    <a class="btn btn-ghost" href="/admin/">{% trans "Admin" %}</a>
+                {% endif %}
+
+                <a class="btn btn-ghost btn-circle" href="/accounts/profile/" aria-label="{% trans 'Profile' %}">
                     {% if nav_profile and nav_profile.avatar_url %}
                         <div class="avatar">
                             <div class="w-8 rounded-full">
@@ -63,14 +94,14 @@
                 </a>
             {% endif %}
             {% if request.user.is_authenticated %}
-                <a class="btn btn-ghost" href="/accounts/profile/">Profile</a>
+                <a class="btn btn-ghost" href="/accounts/profile/">{% trans "Profile" %}</a>
                 <form method="post" action="/accounts/logout/">
                     {% csrf_token %}
-                    <button class="btn btn-secondary" type="submit">Logout</button>
+                    <button class="btn btn-secondary" type="submit">{% trans "Logout" %}</button>
                 </form>
             {% else %}
-                <a class="btn btn-ghost" href="/accounts/login/">Login</a>
-                <a class="btn btn-primary" href="/accounts/signup/">Sign up</a>
+                <a class="btn btn-ghost" href="/accounts/login/">{% trans "Login" %}</a>
+                <a class="btn btn-primary" href="/accounts/signup/">{% trans "Sign up" %}</a>
             {% endif %}
         </div>
     </div>

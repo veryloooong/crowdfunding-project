@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Notifications{% endblock %}
+{% block title %}{% trans "Notifications" %}{% endblock %}
 
 {% block content %}
   <div class="card bg-base-100 max-w-3xl">
     <div class="card-body">
-      <h1 class="text-3xl font-bold mb-2">Notifications</h1>
+      <h1 class="text-3xl font-bold mb-2">{% trans "Notifications" %}</h1>
 
       <div class="space-y-2">
         {% for n in notifications %}
@@ -20,7 +21,7 @@
             </div>
           </div>
         {% empty %}
-          <div class="alert alert-info"><span>No notifications.</span></div>
+          <div class="alert alert-info"><span>{% trans "No notifications." %}</span></div>
         {% endfor %}
       </div>
     </div>

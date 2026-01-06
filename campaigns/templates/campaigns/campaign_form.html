@@ -1,67 +1,84 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Create campaign{% endblock %}
+{% block title %}{% trans "Create campaign" %}{% endblock %}
 
 {% block content %}
-  <div class="card bg-base-100 max-w-3xl">
-    <div class="card-body">
-      <h1 class="text-3xl font-bold mb-2">Create campaign</h1>
-      <form method="post" class="space-y-3">
-        {% csrf_token %}
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <div class="card bg-base-100 w-full max-w-3xl">
+      <div class="card-body">
+        <h1 class="text-3xl font-bold mb-2">{% trans "Create campaign" %}</h1>
+        <form method="post" class="space-y-3">
+          {% csrf_token %}
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Title</span></div>
-          <input class="input input-bordered" name="title" required />
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Title" %}</span></div>
+          <input class="input input-bordered w-full" name="title" required />
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Image URL (optional)</span></div>
-          <input class="input input-bordered" name="image_url" type="url" placeholder="https://..." />
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Image URL (optional)" %}</span></div>
+          <input class="input input-bordered w-full" name="image_url" type="url" placeholder="https://..." />
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Description</span></div>
-          <textarea class="textarea textarea-bordered" name="description" rows="6" required></textarea>
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Donate QR image URL (optional)" %}</span></div>
+          <input class="input input-bordered w-full" name="donate_qr_image_url" type="url" placeholder="https://..." />
+          <div class="label"><span class="label-text-alt opacity-70">{% trans "This QR will be shown when donors click Donate." %}</span></div>
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Goal amount (VND)</span></div>
-          <input class="input input-bordered" name="goal_amount" type="number" step="1000" min="1000" required />
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Description" %}</span></div>
+          <textarea class="textarea textarea-bordered w-full" name="description" rows="6" required></textarea>
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">End date</span></div>
-          <input class="input input-bordered" name="end_date" type="date" min="{{ today|date:'Y-m-d' }}" required />
-          <div class="label"><span class="label-text-alt">Must be today or later</span></div>
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Goal amount (VND)" %}</span></div>
+          <input class="input input-bordered w-full" name="goal_amount" type="number" step="1000" min="1000" required />
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Categories</span></div>
-          <select class="select select-bordered" name="categories" multiple>
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "End date" %}</span></div>
+          <input class="input input-bordered w-full" name="end_date" type="date" min="{{ today|date:'Y-m-d' }}" required />
+          <div class="label"><span class="label-text-alt">{% trans "Must be today or later" %}</span></div>
+        </label>
+
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Categories" %}</span></div>
+          <select class="select select-bordered w-full" name="categories" multiple>
             {% for c in categories %}
               <option value="{{ c.id }}">{{ c.name }}</option>
             {% endfor %}
           </select>
-          <div class="label"><span class="label-text-alt">Hold Ctrl/Command to select multiple. If you don't see any, add new ones below.</span></div>
+          <div class="label"><span class="label-text-alt">{% trans "Hold Ctrl/Command to select multiple. If you don't see any, add new ones below." %}</span></div>
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">New categories (optional)</span></div>
-          <input class="input input-bordered" name="categories_text" placeholder="e.g. Education, Medical" />
-          <div class="label"><span class="label-text-alt">Comma-separated. We'll create these categories for you.</span></div>
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "New categories (optional)" %}</span></div>
+          <input class="input input-bordered w-full" name="categories_text" placeholder="{% trans 'e.g. Education, Medical' %}" />
+          <div class="label"><span class="label-text-alt">{% trans "Comma-separated. We'll create these categories for you." %}</span></div>
         </label>
 
-        <label class="form-control">
-          <div class="label"><span class="label-text">Tags (optional)</span></div>
-          <input class="input input-bordered" name="tags" placeholder="e.g. medical, education, emergency" />
-          <div class="label"><span class="label-text-alt">Comma-separated</span></div>
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Tags (optional)" %}</span></div>
+          <input class="input input-bordered w-full" name="tags" placeholder="{% trans 'e.g. medical, education, emergency' %}" />
+          <div class="label"><span class="label-text-alt">{% trans "Comma-separated" %}</span></div>
         </label>
 
-        <div class="card-actions justify-end">
-          <button class="btn btn-primary" type="submit">Create</button>
-          <a class="btn btn-ghost" href="/">Cancel</a>
-        </div>
-      </form>
+          <div class="card-actions justify-end">
+            <button class="btn btn-primary" type="submit">{% trans "Create" %}</button>
+            <a class="btn btn-ghost" href="/">{% trans "Cancel" %}</a>
+          </div>
+        </form>
+
+        <script>
+          // Avoid browser auto-selecting the first category option.
+          const categoriesSelect = document.querySelector('select[name="categories"]')
+          if (categoriesSelect) {
+            Array.from(categoriesSelect.options).forEach(o => { o.selected = false })
+          }
+        </script>
+      </div>
     </div>
   </div>
 {% endblock %}

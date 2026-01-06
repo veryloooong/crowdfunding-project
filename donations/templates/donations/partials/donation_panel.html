@@ -1,11 +1,9 @@
+{% load i18n %}
+
 <div id="donation-panel-{{ campaign.id }}" class="space-y-3">
   {% if error_message %}
     <div class="alert alert-error"><span>{{ error_message }}</span></div>
   {% endif %}
-
-  <div>
-    {% include "campaigns/partials/progress.html" with campaign=campaign %}
-  </div>
 
   {% if not disable_donate %}
     {% include "donations/partials/donate_box.html" with campaign=campaign %}
@@ -13,20 +11,20 @@
 
   <div class="card bg-base-200">
     <div class="card-body">
-      <h3 class="font-semibold">Recent donations</h3>
+      <h3 class="font-semibold">{% trans "Recent donations" %}</h3>
       <div class="space-y-2">
         {% for d in donations %}
           <div class="flex items-center justify-between">
             <div class="text-sm">
               <span class="font-semibold">{{ d.public_name }}</span>
               {% if d.group %}
-                <span class="text-base-content/70">via {{ d.group.name }}</span>
+                <span class="text-base-content/70">{% trans "via" %} {{ d.group.name }}</span>
               {% endif %}
             </div>
             <div class="text-sm font-semibold">{{ d.amount|floatformat:0 }} ₫</div>
           </div>
         {% empty %}
-          <div class="text-sm text-base-content/70">No donations yet.</div>
+          <div class="text-sm text-base-content/70">{% trans "No donations yet." %}</div>
         {% endfor %}
       </div>
     </div>
