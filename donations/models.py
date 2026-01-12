@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Donation(models.Model):
@@ -10,9 +11,9 @@ class Donation(models.Model):
   STATUS_REJECTED = "rejected"
 
   STATUS_CHOICES = [
-    (STATUS_PENDING, "Pending"),
-    (STATUS_APPROVED, "Approved"),
-    (STATUS_REJECTED, "Rejected"),
+    (STATUS_PENDING, _("Pending")),
+    (STATUS_APPROVED, _("Approved")),
+    (STATUS_REJECTED, _("Rejected")),
   ]
 
   campaign = models.ForeignKey("campaigns.Campaign", on_delete=models.CASCADE, related_name="donations")
@@ -41,7 +42,7 @@ class Donation(models.Model):
   @property
   def public_name(self) -> str:
     if self.is_anonymous:
-      return "Anonymous"
+      return str(_("Anonymous"))
     if self.display_name:
       return self.display_name
-    return getattr(self.donor, "username", "Donor")
+    return getattr(self.donor, "username", str(_("Donor")))

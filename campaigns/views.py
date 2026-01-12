@@ -12,6 +12,7 @@ from django.db.models.functions import Cast
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from donations.models import Donation
 from user.models import Profile
@@ -122,9 +123,12 @@ def campaign_list(request: HttpRequest) -> HttpResponse:
 
 def campaign_detail(request: HttpRequest, campaign_id: int) -> HttpResponse:
   campaign = get_object_or_404(
-    Campaign.objects.prefetch_related("categories", "tags", "updates", "events"),
+    Campaign.objects.select_related("created_by").prefetch_related("categories", "tags", "updates", "events"),
     id=campaign_id,
   )
+
+  creator_user = campaign.created_by
+  creator_profile = Profile.get_or_create_for_user(creator_user) if creator_user else None
 
   can_manage = request.user.is_authenticated and campaign.created_by_id == request.user.id
   is_fundraiser = False
@@ -145,6 +149,8 @@ def campaign_detail(request: HttpRequest, campaign_id: int) -> HttpResponse:
 
   context = {
     "campaign": campaign,
+    "creator_user": creator_user,
+    "creator_profile": creator_profile,
     "donations": donations,
     "can_manage": can_manage,
     "disable_donate": can_manage or is_fundraiser,
@@ -158,7 +164,7 @@ def campaign_detail(request: HttpRequest, campaign_id: int) -> HttpResponse:
 def campaign_donation_requests(request: HttpRequest, campaign_id: int) -> HttpResponse:
   campaign = get_object_or_404(Campaign, id=campaign_id)
   if campaign.created_by_id != request.user.id:
-    messages.error(request, "You cannot manage donation requests for this campaign.")
+    messages.error(request, _("You cannot manage donation requests for this campaign."))
     return redirect("campaigns:detail", campaign_id=campaign.id)
 
   pending_donations = (
@@ -180,7 +186,7 @@ def campaign_donation_requests(request: HttpRequest, campaign_id: int) -> HttpRe
 def campaign_approve_donation(request: HttpRequest, campaign_id: int, donation_id: int) -> HttpResponse:
   campaign = get_object_or_404(Campaign, id=campaign_id)
   if campaign.created_by_id != request.user.id:
-    messages.error(request, "You cannot approve donations for this campaign.")
+    messages.error(request, _("You cannot approve donations for this campaign."))
     return redirect("campaigns:detail", campaign_id=campaign.id)
 
   if request.method != "POST":
@@ -188,7 +194,7 @@ def campaign_approve_donation(request: HttpRequest, campaign_id: int, donation_i
 
   donation = get_object_or_404(Donation, id=donation_id, campaign=campaign)
   if donation.status != Donation.STATUS_PENDING:
-    messages.info(request, "This donation request was already decided.")
+    messages.info(request, _("This donation request was already decided."))
     return redirect("campaigns:donation_requests", campaign_id=campaign.id)
 
   donation.status = Donation.STATUS_APPROVED
@@ -199,11 +205,11 @@ def campaign_approve_donation(request: HttpRequest, campaign_id: int, donation_i
   Notification.objects.create(
     user=donation.donor,
     kind=Notification.KIND_DONATION,
-    message=f"Yêu cầu ủng hộ cho chiến dịch '{campaign.title}' đã được duyệt.",
+    message=_("Your donation request for '%(title)s' was approved.") % {"title": campaign.title},
     url=f"/campaigns/{campaign.id}/",
   )
 
-  messages.success(request, "Donation approved.")
+  messages.success(request, _("Donation approved."))
   return redirect("campaigns:donation_requests", campaign_id=campaign.id)
 
 
@@ -211,7 +217,7 @@ def campaign_approve_donation(request: HttpRequest, campaign_id: int, donation_i
 def campaign_reject_donation(request: HttpRequest, campaign_id: int, donation_id: int) -> HttpResponse:
   campaign = get_object_or_404(Campaign, id=campaign_id)
   if campaign.created_by_id != request.user.id:
-    messages.error(request, "You cannot reject donations for this campaign.")
+    messages.error(request, _("You cannot reject donations for this campaign."))
     return redirect("campaigns:detail", campaign_id=campaign.id)
 
   if request.method != "POST":
@@ -219,7 +225,7 @@ def campaign_reject_donation(request: HttpRequest, campaign_id: int, donation_id
 
   donation = get_object_or_404(Donation, id=donation_id, campaign=campaign)
   if donation.status != Donation.STATUS_PENDING:
-    messages.info(request, "This donation request was already decided.")
+    messages.info(request, _("This donation request was already decided."))
     return redirect("campaigns:donation_requests", campaign_id=campaign.id)
 
   donation.status = Donation.STATUS_REJECTED
@@ -230,11 +236,11 @@ def campaign_reject_donation(request: HttpRequest, campaign_id: int, donation_id
   Notification.objects.create(
     user=donation.donor,
     kind=Notification.KIND_DONATION,
-    message=f"Yêu cầu ủng hộ cho chiến dịch '{campaign.title}' đã bị từ chối.",
+    message=_("Your donation request for '%(title)s' was rejected.") % {"title": campaign.title},
     url=f"/campaigns/{campaign.id}/",
   )
 
-  messages.success(request, "Donation rejected.")
+  messages.success(request, _("Donation rejected."))
   return redirect("campaigns:donation_requests", campaign_id=campaign.id)
 
 

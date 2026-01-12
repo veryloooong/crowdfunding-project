@@ -19,6 +19,48 @@
             <h1 class="text-3xl font-bold mb-2">{{ campaign.title }}</h1>
             <div class="text-sm text-base-content/70">{% trans "Ends" %}: {{ campaign.end_date }}</div>
 
+            <div class="mt-4 card bg-base-200">
+              <div class="card-body p-4">
+                <h2 class="font-semibold">{% trans "Campaign creator" %}</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 text-sm">
+                  <div>
+                    <div class="opacity-70">{% trans "Full name" %}</div>
+                    <div>
+                      {% if creator_profile and creator_profile.full_name %}
+                        {{ creator_profile.full_name }}
+                      {% elif creator_user %}
+                        {{ creator_user.get_username }}
+                      {% else %}
+                        <span class="opacity-70">—</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="opacity-70">{% trans "Email" %}</div>
+                    <div>
+                      {% if creator_user and creator_user.email %}
+                        <a class="link link-hover" href="mailto:{{ creator_user.email }}">{{ creator_user.email }}</a>
+                      {% else %}
+                        <span class="opacity-70">—</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="opacity-70">{% trans "Phone" %}</div>
+                    <div>
+                      {% if creator_profile and creator_profile.phone %}
+                        {{ creator_profile.phone }}
+                      {% else %}
+                        <span class="opacity-70">—</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {% if campaign.categories.all %}
               <div class="mt-2 flex flex-wrap gap-2">
                 {% for c in campaign.categories.all %}

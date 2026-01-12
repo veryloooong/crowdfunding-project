@@ -433,3 +433,126 @@ msgstr "Xin chào"
 
 msgid "Welcome to the crowdfunding project"
 msgstr "Chào mừng đến với dự án gây quỹ"
+
+msgid "Send request"
+msgstr "Gửi yêu cầu"
+
+msgid "Donation requests"
+msgstr "Yêu cầu ủng hộ"
+
+msgid "Approve requests to make donations visible on the campaign."
+msgstr "Duyệt yêu cầu để khoản ủng hộ hiển thị trên chiến dịch."
+
+msgid "Back"
+msgstr "Quay lại"
+
+msgid "Pending"
+msgstr "Chờ duyệt"
+
+msgid "Time"
+msgstr "Thời gian"
+
+msgid "Donor"
+msgstr "Người ủng hộ"
+
+msgid "Amount"
+msgstr "Số tiền"
+
+msgid "Display"
+msgstr "Hiển thị"
+
+msgid "Group"
+msgstr "Nhóm"
+
+msgid "Actions"
+msgstr "Thao tác"
+
+msgid "No display name"
+msgstr "Không có tên hiển thị"
+
+msgid "Approve"
+msgstr "Duyệt"
+
+msgid "Reject"
+msgstr "Từ chối"
+
+msgid "No pending donation requests."
+msgstr "Không có yêu cầu ủng hộ nào đang chờ."
+
+msgid "Your donation will appear after the campaign owner approves it."
+msgstr "Khoản ủng hộ sẽ hiển thị sau khi chủ chiến dịch duyệt."
+
+msgid "Donation request sent. Awaiting campaign owner approval."
+msgstr "Đã gửi yêu cầu ủng hộ. Đang chờ chủ chiến dịch duyệt."
+
+msgid "Campaign '%(title)s' has a new donation request (pending approval)."
+msgstr "Chiến dịch '%(title)s' vừa có một yêu cầu ủng hộ mới (chờ duyệt)."
+
+msgid "Your donation request for '%(title)s' was approved."
+msgstr "Yêu cầu ủng hộ cho '%(title)s' đã được duyệt."
+
+msgid "Your donation request for '%(title)s' was rejected."
+msgstr "Yêu cầu ủng hộ cho '%(title)s' đã bị từ chối."
+
+msgid "Donation approved."
+msgstr "Đã duyệt ủng hộ."
+
+msgid "Donation rejected."
+msgstr "Đã từ chối ủng hộ."
+
+msgid "This donation request was already decided."
+msgstr "Yêu cầu ủng hộ này đã được xử lý trước đó."
+
+msgid "You cannot manage donation requests for this campaign."
+msgstr "Bạn không thể quản lý yêu cầu ủng hộ của chiến dịch này."
+
+msgid "You cannot approve donations for this campaign."
+msgstr "Bạn không thể duyệt ủng hộ cho chiến dịch này."
+
+msgid "You cannot reject donations for this campaign."
+msgstr "Bạn không thể từ chối ủng hộ cho chiến dịch này."
+
+msgid "Fundraiser accounts cannot donate. Please use a donor account."
+msgstr "Tài khoản gây quỹ không thể ủng hộ. Vui lòng dùng tài khoản người ủng hộ."
+
+msgid "You cannot donate to your own campaign."
+msgstr "Bạn không thể ủng hộ chiến dịch của chính mình."
+
+msgid "Donation amount must be greater than 0."
+msgstr "Số tiền ủng hộ phải lớn hơn 0."
+
+msgid "Donation amount is too large."
+msgstr "Số tiền ủng hộ quá lớn."
+
+msgid "Anonymous"
+msgstr "Ẩn danh"
+
+msgid "Donor"
+msgstr "Người ủng hộ"
+
+msgid "Approved"
+msgstr "Đã duyệt"
+
+msgid "Rejected"
+msgstr "Đã từ chối"
+
+msgid "Campaign creator"
+msgstr "Người tạo chiến dịch"
+
+msgid "I want to be a fundraiser (can create campaigns)"
+msgstr "Tôi muốn là người gây quỹ (có thể tạo chiến dịch)"
+
+msgid "Note: This choice is permanent for the account."
+msgstr "Lưu ý: Lựa chọn này là cố định cho tài khoản."
+
+msgid "Account type: Fundraiser"
+msgstr "Loại tài khoản: Gây quỹ"
+
+msgid "Fundraiser accounts can create campaigns but cannot donate."
+msgstr "Tài khoản gây quỹ có thể tạo chiến dịch nhưng không thể ủng hộ."
+
+msgid "Account type: Donor"
+msgstr "Loại tài khoản: Người ủng hộ"
+
+msgid "Donor accounts can donate but cannot create campaigns."
+msgstr "Tài khoản người ủng hộ có thể ủng hộ nhưng không thể tạo chiến dịch."
