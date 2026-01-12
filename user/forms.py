@@ -10,10 +10,11 @@ from .models import Profile
 class SignUpForm(UserCreationForm):
   email = forms.EmailField(required=True)
   phone = forms.CharField(required=True, max_length=30)
+  can_fundraise = forms.BooleanField(required=False)
 
   class Meta(UserCreationForm.Meta):
     model = User
-    fields = ("username", "email", "phone", "password1", "password2")
+    fields = ("username", "email", "phone", "can_fundraise", "password1", "password2")
 
   def save(self, commit: bool = True):
     user = super().save(commit=False)
@@ -24,6 +25,7 @@ class SignUpForm(UserCreationForm):
         user=user,
         defaults={
           "phone": self.cleaned_data["phone"],
+          "can_fundraise": bool(self.cleaned_data.get("can_fundraise")),
         },
       )
     return user

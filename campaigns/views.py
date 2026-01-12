@@ -7,13 +7,15 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.db.models import Count, Sum
+from django.db.models import CharField, Count, Sum
+from django.db.models.functions import Cast
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from donations.models import Donation
 from user.models import Profile
+from user.models import Notification
 
 from .models import Campaign, Category, Tag, CampaignUpdate, Event
 
@@ -87,7 +89,7 @@ def campaign_list(request: HttpRequest) -> HttpResponse:
 
   if sort == "popular":
     max_amount = _decimal_field_max_value(Donation, "amount")
-    donation_filter = Q()
+    donation_filter = Q(donations__status=Donation.STATUS_APPROVED)
     if max_amount > 0:
       donation_filter &= Q(donations__amount__lte=max_amount)
 
@@ -124,18 +126,116 @@ def campaign_detail(request: HttpRequest, campaign_id: int) -> HttpResponse:
     id=campaign_id,
   )
 
+  can_manage = request.user.is_authenticated and campaign.created_by_id == request.user.id
+  is_fundraiser = False
+  if request.user.is_authenticated:
+    profile = Profile.get_or_create_for_user(request.user)
+    is_fundraiser = bool(profile.can_fundraise)
+
   max_amount = _decimal_field_max_value(Donation, "amount")
   donations_qs = Donation.objects.filter(campaign=campaign)
+  donations_qs = donations_qs.filter(status=Donation.STATUS_APPROVED)
   if max_amount > 0:
     donations_qs = donations_qs.filter(amount__lte=max_amount)
   donations = donations_qs.select_related("donor", "group")[:10]
 
+  pending_count = 0
+  if can_manage:
+    pending_count = Donation.objects.filter(campaign=campaign, status=Donation.STATUS_PENDING).count()
+
   context = {
     "campaign": campaign,
     "donations": donations,
-    "can_manage": request.user.is_authenticated and campaign.created_by_id == request.user.id,
+    "can_manage": can_manage,
+    "disable_donate": can_manage or is_fundraiser,
+    "disable_donate_reason": "owner" if can_manage else ("fundraiser" if is_fundraiser else ""),
+    "pending_donation_count": pending_count,
   }
   return render(request, "campaigns/campaign_detail.html", context)
+
+
+@login_required
+def campaign_donation_requests(request: HttpRequest, campaign_id: int) -> HttpResponse:
+  campaign = get_object_or_404(Campaign, id=campaign_id)
+  if campaign.created_by_id != request.user.id:
+    messages.error(request, "You cannot manage donation requests for this campaign.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  pending_donations = (
+    Donation.objects.filter(campaign=campaign, status=Donation.STATUS_PENDING)
+    .select_related("donor", "group")
+    .defer("amount")
+    .annotate(amount_text=Cast("amount", output_field=CharField()))
+    .order_by("-created_at")
+  )
+  context = {
+    "campaign": campaign,
+    "pending_donations": pending_donations,
+    "pending_count": pending_donations.count(),
+  }
+  return render(request, "campaigns/donation_requests.html", context)
+
+
+@login_required
+def campaign_approve_donation(request: HttpRequest, campaign_id: int, donation_id: int) -> HttpResponse:
+  campaign = get_object_or_404(Campaign, id=campaign_id)
+  if campaign.created_by_id != request.user.id:
+    messages.error(request, "You cannot approve donations for this campaign.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  if request.method != "POST":
+    return redirect("campaigns:donation_requests", campaign_id=campaign.id)
+
+  donation = get_object_or_404(Donation, id=donation_id, campaign=campaign)
+  if donation.status != Donation.STATUS_PENDING:
+    messages.info(request, "This donation request was already decided.")
+    return redirect("campaigns:donation_requests", campaign_id=campaign.id)
+
+  donation.status = Donation.STATUS_APPROVED
+  donation.decided_by = request.user
+  donation.decided_at = timezone.now()
+  donation.save(update_fields=["status", "decided_by", "decided_at"])
+
+  Notification.objects.create(
+    user=donation.donor,
+    kind=Notification.KIND_DONATION,
+    message=f"Yêu cầu ủng hộ cho chiến dịch '{campaign.title}' đã được duyệt.",
+    url=f"/campaigns/{campaign.id}/",
+  )
+
+  messages.success(request, "Donation approved.")
+  return redirect("campaigns:donation_requests", campaign_id=campaign.id)
+
+
+@login_required
+def campaign_reject_donation(request: HttpRequest, campaign_id: int, donation_id: int) -> HttpResponse:
+  campaign = get_object_or_404(Campaign, id=campaign_id)
+  if campaign.created_by_id != request.user.id:
+    messages.error(request, "You cannot reject donations for this campaign.")
+    return redirect("campaigns:detail", campaign_id=campaign.id)
+
+  if request.method != "POST":
+    return redirect("campaigns:donation_requests", campaign_id=campaign.id)
+
+  donation = get_object_or_404(Donation, id=donation_id, campaign=campaign)
+  if donation.status != Donation.STATUS_PENDING:
+    messages.info(request, "This donation request was already decided.")
+    return redirect("campaigns:donation_requests", campaign_id=campaign.id)
+
+  donation.status = Donation.STATUS_REJECTED
+  donation.decided_by = request.user
+  donation.decided_at = timezone.now()
+  donation.save(update_fields=["status", "decided_by", "decided_at"])
+
+  Notification.objects.create(
+    user=donation.donor,
+    kind=Notification.KIND_DONATION,
+    message=f"Yêu cầu ủng hộ cho chiến dịch '{campaign.title}' đã bị từ chối.",
+    url=f"/campaigns/{campaign.id}/",
+  )
+
+  messages.success(request, "Donation rejected.")
+  return redirect("campaigns:donation_requests", campaign_id=campaign.id)
 
 
 @login_required

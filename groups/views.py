@@ -49,7 +49,7 @@ def group_detail(request: HttpRequest, group_id: int) -> HttpResponse:
   max_amount = Donation._meta.get_field("amount").max_digits
   decimal_places = Donation._meta.get_field("amount").decimal_places
   integer_digits = int(max_amount) - int(decimal_places)
-  donations_qs = Donation.objects.filter(group=group)
+  donations_qs = Donation.objects.filter(group=group, status=Donation.STATUS_APPROVED)
   if integer_digits > 0:
     from decimal import Decimal
     max_value = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** int(decimal_places)))

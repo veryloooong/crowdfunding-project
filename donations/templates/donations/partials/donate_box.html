@@ -4,6 +4,7 @@
   <div class="card bg-base-200">
     <div class="card-body">
       <h3 class="font-semibold">{% trans "Donate" %}</h3>
+      <div class="text-sm opacity-70">{% trans "Your donation will appear after the campaign owner approves it." %}</div>
       <form
         method="post"
         action="/donations/campaign/{{ campaign.id }}/"
@@ -50,16 +51,16 @@
                 <img class="rounded-box w-full" src="{{ campaign.donate_qr_image_url }}" alt="Donate QR" />
               </div>
               <div class="modal-action">
-                <button class="btn btn-primary" type="submit" form="donate-form-{{ campaign.id }}">{% trans "Donate" %}</button>
+                    <button class="btn btn-primary" type="submit" form="donate-form-{{ campaign.id }}">{% trans "Send request" %}</button>
                 <label class="btn" for="donate-qr-modal-{{ campaign.id }}">{% trans "Close" %}</label>
               </div>
             </div>
             <label class="modal-backdrop" for="donate-qr-modal-{{ campaign.id }}">{% trans "Close" %}</label>
           </div>
 
-          <label class="btn btn-primary w-full" for="donate-qr-modal-{{ campaign.id }}">{% trans "Donate" %}</label>
+              <label class="btn btn-primary w-full" for="donate-qr-modal-{{ campaign.id }}">{% trans "Send request" %}</label>
         {% else %}
-          <button class="btn btn-primary w-full" type="submit">{% trans "Donate" %}</button>
+              <button class="btn btn-primary w-full" type="submit">{% trans "Send request" %}</button>
         {% endif %}
       </form>
     </div>

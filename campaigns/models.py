@@ -68,9 +68,9 @@ class Campaign(models.Model):
     integer_digits = max_digits - decimal_places
     if integer_digits > 0:
       max_amount = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
-      qs = self.donations.filter(amount__lte=max_amount)
+      qs = self.donations.filter(status=donation_model.STATUS_APPROVED, amount__lte=max_amount)
     else:
-      qs = self.donations.all()
+      qs = self.donations.filter(status=donation_model.STATUS_APPROVED)
 
     total = qs.aggregate(total=models.Sum("amount")).get("total")
     return total or Decimal("0")
@@ -84,9 +84,9 @@ class Campaign(models.Model):
     integer_digits = max_digits - decimal_places
     if integer_digits > 0:
       max_amount = (Decimal(10) ** integer_digits) - (Decimal(1) / (Decimal(10) ** decimal_places))
-      qs = self.donations.filter(amount__lte=max_amount)
+      qs = self.donations.filter(status=donation_model.STATUS_APPROVED, amount__lte=max_amount)
     else:
-      qs = self.donations.all()
+      qs = self.donations.filter(status=donation_model.STATUS_APPROVED)
 
     return qs.values("donor_id").distinct().count()
 

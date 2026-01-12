@@ -37,6 +37,15 @@
 
             {% if can_manage %}
               <div class="mt-4">
+                <div class="mb-3">
+                  <a class="btn btn-outline btn-sm" href="{% url 'campaigns:donation_requests' campaign.id %}">
+                    {% trans "Donation requests" %}
+                    {% if pending_donation_count|default:0|add:0 > 0 %}
+                      <span class="badge badge-warning ml-2">{{ pending_donation_count }}</span>
+                    {% endif %}
+                  </a>
+                </div>
+
                 <form class="flex flex-col md:flex-row gap-2" method="post" action="{% url 'campaigns:update_image' campaign.id %}">
                   {% csrf_token %}
                   <input class="input input-bordered w-full" name="image_url" value="{{ campaign.image_url }}" placeholder="{% trans 'Campaign image URL' %}" />
@@ -59,7 +68,7 @@
               {% include "campaigns/partials/progress.html" with campaign=campaign %}
             </div>
             <div class="mt-3">
-              {% include "donations/partials/donation_panel.html" with campaign=campaign donations=donations disable_donate=can_manage %}
+              {% include "donations/partials/donation_panel.html" with campaign=campaign donations=donations disable_donate=disable_donate disable_donate_reason=disable_donate_reason %}
             </div>
           </div>
         </div>

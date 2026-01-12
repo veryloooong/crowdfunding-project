@@ -57,6 +57,14 @@
             {% endif %}
           </label>
 
+          <label class="label cursor-pointer justify-start gap-2">
+            {{ form.can_fundraise }}
+            <span class="label-text">{% trans "I want to be a fundraiser (can create campaigns)" %}</span>
+          </label>
+          <div class="text-sm opacity-70 -mt-2">
+            {% trans "Note: This choice is permanent for the account." %}
+          </div>
+
           <label class="form-control w-full block">
             <div class="label"><span class="label-text">{% trans "Password" %}</span></div>
             {{ form.password1 }}
@@ -96,6 +104,8 @@
 
   <script>
     document.querySelectorAll('input').forEach(i => {
+      const t = (i.getAttribute('type') || '').toLowerCase()
+      if (t === 'hidden' || t === 'checkbox' || t === 'radio' || t === 'submit') return
       i.classList.add('input', 'input-bordered', 'w-full')
     })
   </script>

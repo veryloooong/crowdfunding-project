@@ -32,7 +32,6 @@ def profile(request: HttpRequest) -> HttpResponse:
   profile = Profile.get_or_create_for_user(request.user)
 
   if request.method == "POST":
-    profile.can_fundraise = request.POST.get("can_fundraise") == "on"
     profile.phone = (request.POST.get("phone") or "").strip()
 
     profile.full_name = (request.POST.get("full_name") or "").strip()
