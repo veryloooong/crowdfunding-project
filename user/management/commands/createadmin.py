@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-  help = "Creates a superuser from environment variables if one does not exist."
+  help = "Creates a superuser from environment variables with specified username/password."
 
   def handle(self, *args, **options):
     User = get_user_model()
@@ -21,9 +21,18 @@ class Command(BaseCommand):
       )
       return
 
-    if not User.objects.filter(username=username).exists():
-      self.stdout.write(f'Creating superuser "{username}"...')
+    try:
+      user = User.objects.get(username=username)
+      self.stdout.write(f"Superuser '{username}' already exists.")
+
+      if not user.check_password(password):
+        user.set_password(password)
+        user.save()
+        self.stdout.write(self.style.SUCCESS(f"Updated password for existing superuser '{username}'."))
+      else:
+        self.stdout.write(f"Password for superuser '{username}' is already up to date.")
+
+    except User.DoesNotExist:
+      self.stdout.write(f"Creating superuser '{username}'...")
       User.objects.create_superuser(username=username, email=email, password=password)
-      self.stdout.write(self.style.SUCCESS(f'Successfully created superuser "{username}"!'))
-    else:
-      self.stdout.write(self.style.WARNING(f'Superuser "{username}" already exists. Skipping.'))
+      self.stdout.write(self.style.SUCCESS(f"Superuser '{username}' created successfully."))
