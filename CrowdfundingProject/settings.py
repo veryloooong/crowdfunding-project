@@ -30,7 +30,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-dev-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["*"]
+# Hosts
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+ALLOWED_HOSTS = []
+
+if RENDER_EXTERNAL_HOSTNAME:
+  ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+ALLOWED_HOSTS.extend(["localhost", "127.0.0.1", "::1"])
 
 # Tailwind
 
