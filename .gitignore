@@ -11,3 +11,4 @@ wheels/
 
 # NodeJS
 **/node_modules/
+.env

@@ -9,6 +9,10 @@ asgiref==3.10.0
     #   django-htmx
 binaryornot==0.4.4
     # via cookiecutter
+bleach==6.1.0
+    # via crowdfunding-project (pyproject.toml)
+brotli==1.2.0
+    # via whitenoise
 certifi==2025.10.5
     # via requests
 chardet==5.2.0
@@ -16,12 +20,17 @@ chardet==5.2.0
 charset-normalizer==3.4.4
     # via requests
 click==8.3.0
-    # via cookiecutter
+    # via
+    #   cookiecutter
+    #   uvicorn
 cookiecutter==2.6.0
+    # via crowdfunding-project (pyproject.toml)
+dj-database-url==3.1.0
     # via crowdfunding-project (pyproject.toml)
 django==5.2.8
     # via
     #   crowdfunding-project (pyproject.toml)
+    #   dj-database-url
     #   django-browser-reload
     #   django-htmx
     #   django-tailwind
@@ -33,24 +42,36 @@ django-htmx==1.26.0
     # via crowdfunding-project (pyproject.toml)
 django-tailwind==4.4.1
     # via crowdfunding-project (pyproject.toml)
+gunicorn==23.0.0
+    # via crowdfunding-project (pyproject.toml)
+h11==0.16.0
+    # via uvicorn
 honcho==2.0.0
     # via crowdfunding-project (pyproject.toml)
 idna==3.11
     # via requests
 jinja2==3.1.6
     # via cookiecutter
+markdown==3.7
+    # via crowdfunding-project (pyproject.toml)
 markdown-it-py==4.0.0
     # via rich
 markupsafe==3.0.3
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
+packaging==25.0
+    # via gunicorn
+psycopg2-binary==2.9.11
+    # via crowdfunding-project (pyproject.toml)
 pygments==2.19.2
     # via rich
 pytailwindcss==0.3.0
     # via django-tailwind
 python-dateutil==2.9.0.post0
     # via arrow
+python-dotenv==1.2.1
+    # via crowdfunding-project (pyproject.toml)
 python-slugify==8.0.4
     # via cookiecutter
 pyyaml==6.0.3
@@ -60,7 +81,9 @@ requests==2.32.5
 rich==14.2.0
     # via cookiecutter
 six==1.17.0
-    # via python-dateutil
+    # via
+    #   bleach
+    #   python-dateutil
 sqlparse==0.5.3
     # via django
 text-unidecode==1.3
@@ -69,8 +92,9 @@ tzdata==2025.2
     # via arrow
 urllib3==2.5.0
     # via requests
-
-markdown==3.7
+uvicorn==0.40.0
     # via crowdfunding-project (pyproject.toml)
-bleach==6.1.0
+webencodings==0.5.1
+    # via bleach
+whitenoise==6.11.0
     # via crowdfunding-project (pyproject.toml)
