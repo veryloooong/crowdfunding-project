@@ -1,0 +1,207 @@
+## Bộ kiểm thử hệ thống (Black-box)
+
+Ghi chú:
+- Tài liệu này được viết lại theo dạng bảng Markdown.
+- Trong các ô “Các bước thực hiện”, xuống dòng dùng ký hiệu `<br>`.
+
+## 1. Chức năng đăng ký
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Kiểm tra kết quả chương trình khi nhập đúng định dạng các trường, username chưa tồn tại | • Nhập email: veryloooong@gmail.com<br>• Nhập username: longlo<br>• Nhập phone: 0123456789<br>• Nhập password: Long123!<br>• Nhập password confirmation: Long123!<br>• Yêu cầu đăng ký | Thông báo đăng ký thành công, chuyển đến trang chủ | Pass |
+| 2 | Kiểm tra kết quả khi nhập thiếu một trường bất kì | • Lần lượt thực hiện nhập thiếu 1 trong 5 trường trên<br>• Yêu cầu đăng ký | Chương trình yêu cầu nhập trường còn thiếu | Pass |
+| 3 | Kiểm tra kết quả chương trình khi nhập 1 username đã đăng ký trước đó | • Đăng ký với username đã sử dụng trước: longlo<br>• Điền đầy đủ các trường còn lại<br>• Yêu cầu đăng ký | Chương trình thông báo username đã tồn tại | Pass |
+| 4 | Kiểm tra kết quả chương trình khi nhập mật khẩu không đúng định dạng | • Đăng ký với mật khẩu yếu: 1236<br>• Điền đầy đủ các trường còn lại<br>• Yêu cầu đăng ký | Chương trình thông báo nhập phần mật khẩu chưa đáp ứng | Pass |
+| 5 | Kiểm tra kết quả chương trình khi nhập xác thực mật khẩu không khớp | • Nhập password: Long123!<br>• Nhập xác thực password: Long1236!<br>• Điền đầy đủ các trường còn lại<br>• Yêu cầu đăng ký | Chương trình thông báo 2 trường mật khẩu không khớp nhau | Pass |
+
+## 2. Chức năng đăng nhập
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Kiểm tra kết quả chương trình khi nhập đúng định dạng các trường, username và password đúng như đã đăng ký | • Nhập username: longlo<br>• Nhập password: Long123!<br>• Yêu cầu đăng nhập | Thông báo đăng nhập thành công, chuyển đến trang chủ | Pass |
+| 2 | Kiểm tra kết quả khi nhập thiếu một trường bất kì | • Lần lượt thực hiện nhập thiếu 1 trong 2 trường trên<br>• Yêu cầu đăng nhập | Chương trình yêu cầu nhập trường còn thiếu | Pass |
+| 3 | Kiểm tra kết quả khi nhập sai tên đăng nhập/mật khẩu | • Nhập username: longlo1<br>• Nhập password: Long123!<br>• Yêu cầu đăng nhập | Chương trình thông báo sai tên đăng nhập và mật khẩu | Pass |
+
+## 3. Chức năng đăng xuất
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Kiểm tra kết quả chương trình khi đăng xuất tài khoản khi đã đăng nhập thành công | • Nhấn nút đăng xuất trên thanh tiêu đề | Chương trình đăng xuất tài khoản thành công, chuyển hướng về trang chủ | Pass |
+
+## 4. Cập nhật thông tin cá nhân
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Kiểm tra giao diện profile khi đăng nhập thành công | • Nhấn nút Profile trên thanh tiêu đề | Chương trình hiển thị giao diện profile thành công, email và phone giống như lúc đã đăng ký | Pass |
+| 2 | Kiểm tra giao diện profile khi cập nhật các trường: Tên đầy đủ, URL Avatar (optional), Sở thích (optional) | • Nhập trường Tên đầy đủ: Lò Hải Long<br>• Nhập sở thích: Đua ngựa<br>• Nhập URL Avatar<br>• Nhấn Lưu | Chương trình thông báo cập nhật profile thành công, avatar hiển thị thành công trên thanh tiêu đề | Pass |
+
+## 5. Chức năng tìm kiếm chiến dịch
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Tìm kiếm chiến dịch khi tìm theo tiêu đề/miêu tả | • Vào màn hình trang chủ<br>• Nhập tiêu đề/miêu tả tương ứng | Chương trình hiển thị chiến dịch tương ứng với tiêu đề/miêu tả đã có | Pass |
+| 2 | Tìm kiếm chiến dịch theo danh mục (Category) | • Vào màn hình trang chủ<br>• Chọn danh mục có sẵn trong hệ thống | Chương trình hiển thị chiến dịch tương ứng với danh mục đã chọn | Pass |
+| 3 | Tìm kiếm chiến dịch theo tag | • Vào màn hình trang chủ<br>• Nhập tag mong muốn tìm thấy | Chương trình hiển thị chiến dịch tương ứng với tag đã nhập | Pass |
+| 4 | Tìm kiếm chiến dịch bằng cách sắp xếp: theo thời gian tạo gần nhất | • Vào màn hình trang chủ<br>• Trong mục Sort, chọn Newest | Chương trình hiển thị thứ tự các chiến dịch tương ứng từ mới nhất đến cũ nhất | Pass |
+| 5 | Tìm kiếm chiến dịch bằng cách sắp xếp: theo lượt truy cập nhiều nhất | • Vào màn hình trang chủ<br>• Trong mục Sort, chọn Popular | Chương trình hiển thị thứ tự các chiến dịch tương ứng từ nhiều lượt truy cập nhất đến ít lượt truy cập nhất | Pass |
+| 6 | Tìm kiếm chiến dịch bằng cách sắp xếp: theo hạn chiến dịch gần nhất | • Vào màn hình trang chủ<br>• Trong mục Sort, chọn Urgent | Chương trình hiển thị thứ tự các chiến dịch tương ứng từ hạn gần nhất đến hạn xa nhất | Pass |
+
+## 6. Chức năng tạo chiến dịch
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Kiểm tra kết quả chương trình khi vào trang tạo chiến dịch khi chưa để là người gây quỹ trong profile | • Không tick là người gây quỹ trong profile<br>• Nhấn vào Tạo chiến dịch trong profile | Chương trình thông báo tài khoản chưa để là người gây quỹ, chuyển hướng đến profile | Pass |
+| 2 | Kiểm tra kết quả chương trình khi vào trang tạo chiến dịch khi để là người gây quỹ trong profile | • Tick là người gây quỹ trong profile<br>• Nhấn vào Tạo chiến dịch trong profile | Chương trình chuyển hướng đến trang tạo chiến dịch | Pass |
+| 3 | Kiểm tra kết quả chương trình khi nhập đầy đủ các trường theo đúng định dạng | • Tiêu đề: Save Amorim<br>• Đường dẫn ảnh: (có/không)<br>• Đường dẫn QR ủng hộ: (có/không)<br>• Mô tả: Giải cứu Amorim khỏi BLĐ Manchester United<br>• Mục tiêu: 1000000000<br>• Ngày kết thúc: 03/06/2026<br>• Danh mục: Bóng đá<br>• Tag: bongda, amorim, MU, mandan | Chương trình chuyển hướng đến trang chính của chiến dịch | Pass |
+| 4 | Kiểm tra kết quả chương trình khi nhập thiếu một trong các trường bắt buộc | • Bỏ trống 1 trường bắt buộc (ví dụ: tiêu đề)<br>• Điền các trường còn lại<br>• Submit | Chương trình thông báo cần nhập vào trường còn thiếu | Pass |
+| 5 | Kiểm tra kết quả chương trình khi nhập sai tiền cần ủng hộ (Goal) | • Goal = -100<br>• Điền các trường còn lại hợp lệ<br>• Submit | Chương trình thông báo tiền nhập vào cần lớn hơn hoặc bằng 1000 | Pass |
+| 6 | Kiểm tra kết quả chương trình khi nhập sai ngày tháng (trong quá khứ) | • End date = 03/06/2025 (quá khứ)<br>• Điền các trường còn lại hợp lệ<br>• Submit | Chương trình thông báo ngày kết thúc cần là hiện tại hoặc muộn hơn | Pass |
+| 7 | Kiểm tra kết quả chương trình khi nhập thêm category mới | • Tạo campaign hợp lệ<br>• Danh mục mới: Chính trị | Chiến dịch vừa tạo có thêm category mới, category vừa thêm cũng được thêm vào danh sách các category của hệ thống | Pass |
+| 8 | Xem chi tiết chiến dịch | • Nhấn vào chiến dịch hiện có ở trang chủ | Chương trình chuyển hướng đến trang chính của chiến dịch | Pass |
+
+## 7. Chức năng trong chiến dịch
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Chủ chiến dịch vào chiến dịch của mình | • Vào chiến dịch của mình | Thấy các chức năng quản lý: cập nhật ảnh, cập nhật QR, viết update, tạo event. Không thấy phần ủng hộ | Pass |
+| 2 | Người ngoài vào chiến dịch không phải của mình | • Vào chiến dịch mong muốn | Chỉ thấy phần ủng hộ; xem được updates và events | Pass |
+| 3 | Cập nhật ảnh cho chiến dịch | • Nhập URL ảnh trong chiến dịch của bản thân<br>• Update | Ảnh được cập nhật trên trang chủ của chiến dịch | Pass |
+| 4 | Cập nhật QR donate | • Nhập QR donate vào phần cập nhật QR<br>• Update | Chương trình hiển thị QR khi nhấn vào nút ủng hộ | Pass |
+| 5 | Viết bài cập nhật (Updates) | • Tiêu đề: Sa thải Amorim<br>• Nội dung: Ban lãnh đạo đã chính thức sa thải Amorim do số tiền ủng hộ không đạt mức yêu cầu.<br>• Post | Chương trình hiển thị thành công update lên trang chính của chiến dịch | Pass |
+| 6 | Tạo sự kiện mới (Event) | • Tiêu đề: Họp fan Mân đàn<br>• Thời gian bắt đầu: 07/01/2026 06:45 SA<br>• Địa điểm: C7 – 107, Đại học Bách khoa Hà Nội<br>• Miêu tả: Họp fan để quyên góp ủng hộ cho chiến dịch<br>• Create | Chương trình hiển thị thành công sự kiện lên trang chính của chiến dịch | Pass |
+| 7 | Donate hợp lệ và xác nhận QR | • Amount: 360000000<br>• Display name: Nguyễn Hoàng Việt<br>• Donate<br>• Xác nhận khi hiển thị QR | Hiển thị người ủng hộ + số tiền; tiến độ cập nhật; chiến dịch xuất hiện ở mục Đã ủng hộ; gửi thông báo cho chủ chiến dịch | Pass |
+| 8 | Donate ẩn danh | • Amount: 360000000<br>• Tick Ủng hộ ẩn danh<br>• Donate<br>• Xác nhận QR | Tương tự test case 7 nhưng tên hiển thị là Anonymous/Anonymously | Pass |
+| 9 | Donate với group | • Amount: 360000000<br>• Display name: Nguyễn Hoàng Việt<br>• Chọn group: dragonbus<br>• Donate<br>• Xác nhận QR | Tên hiển thị: Nguyễn Hoàng Việt via dragonbus; số tiền hiển thị trong group | Pass |
+
+## 8. Chức năng tạo nhóm
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Vào Groups trên thanh tiêu đề | • Vào Groups trên thanh tiêu đề | Hiển thị danh sách các nhóm đã tham gia | Pass |
+| 2 | Tạo group mới theo đúng định dạng | • Vào Create groups<br>• Nhập tên nhóm: Long lò và những người bạn<br>• Nhập miêu tả: Động fan Chelsea<br>• Create | Chương trình chuyển hướng đến trang chủ nhóm | Pass |
+| 3 | Thêm thành viên | • Trong trang chính của nhóm, nhập username tồn tại: longlo<br>• Add member | Thành viên được thêm vào nhóm; gửi thông báo đến thành viên vừa được thêm | Pass |
+| 4 | Nhập tin nhắn trong nhóm | • Messages: nhập “CLB số 1 thế giới”<br>• Nhấn gửi | Tin nhắn hiển thị + tên người gửi + thời gian; gửi thông báo chưa đọc tới các thành viên còn lại | Pass |
+| 5 | Kick thành viên khỏi nhóm | • Trong Members, nhấn Remove member | Thành viên bị kick ra khỏi nhóm | Pass |
+
+## 9. Theo dõi các chiến dịch đã ủng hộ
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Vào Donated trên thanh tiêu đề | • Vào “Donated” trên thanh tiêu đề | Hiển thị danh sách các chiến dịch đã ủng hộ từ trước | Pass |
+
+## 10. Chức năng chuyển đổi nền
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Đổi nền từ tối sang sáng và ngược lại | • Nhấn Toggle theme trên tiêu đề | Chương trình đổi nền từ tối sang sáng và ngược lại | Pass |
+| 2 | Theme giữ nguyên khi chuyển trang | • Chuyển sang bất kỳ giao diện khác | Chương trình vẫn giữ nguyên theme như cũ | Pass |
+
+## 11. Chức năng dịch
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Đổi ngôn ngữ EN ⇄ VI | • Nhấn icon Ngôn ngữ trên thanh tiêu đề<br>• Chọn ngôn ngữ tương ứng | Chương trình đổi ngôn ngữ tương ứng | Pass |
+| 2 | Ngôn ngữ giữ nguyên khi chuyển trang | • Chuyển sang bất kỳ giao diện khác | Chương trình giữ nguyên ngôn ngữ đã chọn trước | Pass |
+
+## 12. Smoke testing (Black-box)
+
+Mục tiêu: kiểm tra nhanh các luồng sống còn (5–10 phút) để xác nhận hệ thống “chạy được”.
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Smoke - Truy cập trang chủ và xem danh sách chiến dịch | • Mở trang chủ “/” | Trang chủ load thành công, danh sách chiến dịch hiển thị (hoặc empty-state) | Chưa chạy |
+| 2 | Smoke - Đăng ký + đăng nhập | • Đăng ký 1 tài khoản mới<br>• Đăng nhập bằng tài khoản vừa tạo | Đăng ký/đăng nhập thành công, thanh điều hướng hiển thị đúng trạng thái đã đăng nhập | Chưa chạy |
+| 3 | Smoke - Đăng xuất | • Nhấn “Đăng xuất” | Đăng xuất thành công, điều hướng hiển thị trạng thái khách | Chưa chạy |
+| 4 | Smoke - Cập nhật Profile cơ bản | • Vào Profile<br>• Sửa Full name/Sở thích<br>• Nhấn Lưu | Lưu thành công, dữ liệu hiển thị đúng sau khi refresh | Chưa chạy |
+| 5 | Smoke - Tạo chiến dịch (fundraiser) | • Trong Profile tick “Tôi là người gây quỹ”<br>• Vào tạo chiến dịch<br>• Điền dữ liệu hợp lệ và tạo | Chiến dịch tạo thành công và vào được trang chi tiết chiến dịch | Chưa chạy |
+| 6 | Smoke - Donate (người ngoài) + cập nhật tiến độ | • Đăng nhập bằng tài khoản khác chủ chiến dịch<br>• Vào chiến dịch<br>• Donate số tiền hợp lệ | Donate thành công; tiến độ chiến dịch cập nhật; recent donations có bản ghi mới | Chưa chạy |
+| 7 | Smoke - Nhóm: tạo nhóm + nhắn tin | • Vào Groups<br>• Tạo nhóm<br>• Gửi 1 tin nhắn | Nhóm tạo thành công; tin nhắn hiển thị trong group | Chưa chạy |
+| 8 | Smoke - Donated list | • Vào “Đã ủng hộ” | Hiển thị danh sách chiến dịch đã ủng hộ (hoặc empty-state) | Chưa chạy |
+| 9 | Smoke - Toggle theme | • Nhấn Toggle theme<br>• Refresh | Theme đổi thành công và vẫn giữ sau refresh | Chưa chạy |
+| 10 | Smoke - Switch language | • Đổi EN/VI<br>• Chuyển trang bất kỳ | Ngôn ngữ đổi thành công và vẫn giữ khi chuyển trang | Chưa chạy |
+
+## 13. Integration testing (Black-box)
+
+Mục tiêu: kiểm thử liên kết giữa các module (auth/profile/campaigns/donations/groups/notifications/i18n/theme).
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Không cho tạo chiến dịch nếu chưa bật fundraiser | • Đăng nhập<br>• Vào Profile bỏ tick fundraiser và Lưu<br>• Thử vào trang tạo chiến dịch | Bị chặn; hiển thị thông báo và chuyển hướng về Profile | Chưa chạy |
+| 2 | Chủ chiến dịch không thể tự donate | • Đăng nhập bằng tài khoản tạo chiến dịch<br>• Vào chiến dịch của mình<br>• Thử donate | Hệ thống chặn; không tạo donation; hiển thị thông báo phù hợp | Chưa chạy |
+| 3 | Donate → cập nhật progress + recent donations + donated list | • Đăng nhập user B (không phải owner)<br>• Donate vào campaign<br>• Kiểm tra progress/recent donations<br>• Mở “Đã ủng hộ” | Progress tăng; recent donations có dòng mới; “Đã ủng hộ” có campaign + tổng tiền | Chưa chạy |
+| 4 | Donate as group → hiển thị trong Group donations | • User B là member của group G<br>• Donate chọn group G<br>• Vào group G, xem Recent donations | Donation hiển thị ở group với campaign + amount + người donate | Chưa chạy |
+| 5 | Donate → gửi notification cho chủ campaign | • User B donate vào campaign của user A<br>• Đăng nhập user A<br>• Kiểm tra Notifications | Có thông báo donation; mở notifications thì đánh dấu đã đọc | Chưa chạy |
+| 6 | Group add member → notification tới người được thêm | • Owner group thêm member bằng username<br>• Đăng nhập user được thêm<br>• Mở Notifications | Có thông báo được thêm vào nhóm; click link mở đúng trang group | Chưa chạy |
+| 7 | Group messages → notification unread cho thành viên khác | • Trong group G, user A gửi message<br>• Đăng nhập user B<br>• Kiểm tra Notifications + mở group | Có notification tin nhắn; mở group thì notification liên quan được đánh dấu đã đọc | Chưa chạy |
+| 8 | Update donate QR ảnh hưởng đến flow donate | • Owner set Donate QR URL<br>• User khác vào campaign và bấm Donate | Hiển thị modal QR; xác nhận thì mới tạo donation | Chưa chạy |
+| 9 | Clear donate QR quay về donate trực tiếp | • Owner xóa Donate QR URL<br>• User khác donate | Không hiện modal QR; bấm Donate tạo donation trực tiếp | Chưa chạy |
+| 10 | i18n/theme persistence với session đăng nhập | • Đăng nhập<br>• Đổi ngôn ngữ VI<br>• Đổi theme<br>• Chuyển nhiều trang + refresh | Ngôn ngữ/theme vẫn giữ; không bị reset khi chuyển trang | Chưa chạy |
+| 11 | Giới hạn số tiền donate lớn (regression InvalidOperation) | • Mở campaign<br>• Nhập số tiền cực lớn (ví dụ: 222022000000001000000000)<br>• Nhấn Donate | Không tạo donation; báo lỗi; trang campaign vẫn truy cập bình thường (không crash) | Chưa chạy |
+| 12 | Giới hạn goal_amount lớn khi tạo campaign | • Vào tạo campaign<br>• Nhập goal_amount cực lớn<br>• Submit | Hệ thống chặn và báo lỗi; không tạo campaign | Chưa chạy |
+
+## 14. Acceptance testing (Black-box)
+
+Mục tiêu: kiểm thử theo “user story” đúng hành vi người dùng cuối.
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Story - Khách truy cập xem chiến dịch | • Mở trang chủ<br>• Dùng search/category/tag/sort<br>• Vào chi tiết 1 campaign | Tìm kiếm/lọc/sắp xếp hoạt động; xem được mô tả, tiến độ, updates/events | Chưa chạy |
+| 2 | Story - Người dùng mới đăng ký và donate | • Đăng ký<br>• Đăng nhập<br>• Vào campaign<br>• Donate hợp lệ | Donate thành công; recent donation hiển thị; campaign nằm trong “Đã ủng hộ” | Chưa chạy |
+| 3 | Story - Fundraiser tạo & quản lý campaign | • Bật fundraiser<br>• Tạo campaign<br>• Cập nhật image<br>• Cập nhật Donate QR<br>• Đăng update + tạo event | Campaign tạo thành công; image/QR/update/event hiển thị đúng | Chưa chạy |
+| 4 | Story - Người dùng tham gia nhóm để donate theo nhóm | • Tạo group<br>• Thêm member<br>• Member donate chọn group | Donation hiển thị tại campaign và tại group; notification gửi đến member khi được thêm | Chưa chạy |
+| 5 | Story - Nhắn tin nhóm và xử lý unread notifications | • Member A gửi message<br>• Member B kiểm tra notification<br>• B vào group đọc messages | Có notification chưa đọc; vào group thì được coi như đã đọc và badge giảm/hết | Chưa chạy |
+| 6 | Story - Đa ngôn ngữ | • Đổi VI/EN<br>• Đi qua các trang chính: Home/Campaign/Groups/Profile/Login/Signup | UI hiển thị đúng ngôn ngữ đã chọn và không bị lẫn ngôn ngữ | Chưa chạy |
+| 7 | Story - Đổi theme | • Toggle theme<br>• Refresh + chuyển trang | Theme vẫn giữ đúng | Chưa chạy |
+
+## 15. Unit testing (Black-box)
+
+Lưu ý: “Unit” ở đây là kiểm thử mức đơn vị tính năng (form/field/validation) bằng thao tác UI/API, không xem code, không mock.
+
+### 15.1 Unit - Signup
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Email sai định dạng | • Nhập email: abc<br>• Điền các trường khác hợp lệ<br>• Đăng ký | Không đăng ký; báo lỗi email | Chưa chạy |
+| 2 | Phone rỗng | • Để trống phone<br>• Đăng ký | Không đăng ký; báo thiếu trường/không hợp lệ | Chưa chạy |
+| 3 | Password thiếu yêu cầu độ mạnh | • Nhập password đơn giản<br>• Đăng ký | Không đăng ký; báo mật khẩu chưa đạt yêu cầu | Chưa chạy |
+
+### 15.2 Unit - Login
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Sai mật khẩu | • Nhập đúng username<br>• Nhập sai password<br>• Login | Không login; báo lỗi xác thực | Chưa chạy |
+| 2 | Thiếu username | • Bỏ trống username<br>• Login | Không login; báo thiếu trường | Chưa chạy |
+
+### 15.3 Unit - Profile
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Email bắt buộc | • Xóa email<br>• Lưu | Không lưu; báo lỗi email bắt buộc | Chưa chạy |
+| 2 | Avatar URL sai định dạng | • Nhập avatar_url: abc<br>• Lưu | Không lưu hoặc báo lỗi URL không hợp lệ | Chưa chạy |
+
+### 15.4 Unit - Create campaign
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Thiếu title | • Title rỗng<br>• Submit | Không tạo; báo lỗi thiếu title | Chưa chạy |
+| 2 | Goal < 1000 | • Goal=500<br>• Submit | Không tạo; báo lỗi goal không hợp lệ | Chưa chạy |
+| 3 | End date quá khứ | • End date = hôm qua<br>• Submit | Không tạo; báo lỗi end date | Chưa chạy |
+| 4 | Tags có trùng lặp | • Tags: a,a,b<br>• Submit | Tạo thành công; tags được xử lý không trùng | Chưa chạy |
+
+### 15.5 Unit - Donate
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Amount < 1000 | • Amount=500<br>• Donate | Không tạo donation; báo lỗi/không cho submit | Chưa chạy |
+| 2 | Amount cực lớn | • Amount=222022000000001000000000<br>• Donate | Không tạo donation; báo lỗi số tiền quá lớn; không crash trang | Chưa chạy |
+| 3 | Close modal QR không tạo donation | • Campaign có QR<br>• Bấm Donate để mở modal<br>• Bấm Close | Không tạo donation; recent donations không đổi | Chưa chạy |
+
+### 15.6 Unit - Groups
+
+| STT Test case | Mô tả test case | Các bước thực hiện | Kết quả từ chương trình | Đánh giá kết quả |
+|---:|---|---|---|---|
+| 1 | Create thiếu tên nhóm | • Name rỗng<br>• Create | Không tạo; báo lỗi name bắt buộc | Chưa chạy |
+| 2 | Add member username không tồn tại | • Nhập username không tồn tại<br>• Add | Không thêm; báo user not found | Chưa chạy |
+| 3 | Message rỗng | • Gửi message rỗng | Không gửi; báo lỗi message không được rỗng | Chưa chạy |
+
+

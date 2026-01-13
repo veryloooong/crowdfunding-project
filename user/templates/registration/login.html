@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <div class="card bg-base-100 w-full max-w-xl">
+      <div class="card-body">
+        <h1 class="text-3xl font-bold mb-2">{% trans "Login" %}</h1>
+
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Username" %}</span></div>
+            {{ form.username }}
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Password" %}</span></div>
+            {{ form.password }}
+          </label>
+
+          <button class="btn btn-primary w-full mt-1" type="submit">{% trans "Login" %}</button>
+        </form>
+
+        <div class="text-sm text-base-content/70 mt-3">
+          <a class="link" href="/accounts/password-reset/">{% trans "Forgot password?" %}</a>
+        </div>
+
+        <div class="text-sm text-base-content/70 mt-4">
+          {% trans "No account?" %} <a class="link" href="/accounts/signup/">{% trans "Sign up" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DaisyUI-friendly inputs
+    document.querySelectorAll('input').forEach(i => {
+      i.classList.add('input', 'input-bordered', 'w-full')
+    })
+  </script>
+{% endblock %}

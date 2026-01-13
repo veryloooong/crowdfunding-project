@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<div id="campaign-progress-{{ campaign.id }}" class="flex flex-col gap-1">
+  <div class="flex items-center justify-between">
+    <div class="text-sm text-base-content/70">{% trans "Raised" %}</div>
+    <div class="text-sm font-semibold">{{ campaign.total_raised|floatformat:0 }} ₫ / {{ campaign.goal_amount|floatformat:0 }} ₫</div>
+  </div>
+  <progress class="progress progress-accent w-full" value="{{ campaign.progress_percent }}" max="100"></progress>
+  <div class="text-sm text-base-content/70">
+    {% blocktrans count donors=campaign.donor_count %}{{ donors }} donor{% plural %}{{ donors }} donors{% endblocktrans %} • {{ campaign.progress_percent }}%
+  </div>
+</div>

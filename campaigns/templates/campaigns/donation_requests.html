@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Donation requests" %}{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col gap-4">
+    <div class="breadcrumbs text-sm">
+      <ul>
+        <li><a href="/">{% trans "Campaigns" %}</a></li>
+        <li><a href="{% url 'campaigns:detail' campaign.id %}">{{ campaign.title }}</a></li>
+        <li>{% trans "Donation requests" %}</li>
+      </ul>
+    </div>
+
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="text-3xl font-bold">{% trans "Donation requests" %}</h1>
+            <div class="text-base-content/70">
+              {% trans "Approve requests to make donations visible on the campaign." %}
+            </div>
+          </div>
+          <a class="btn btn-ghost" href="{% url 'campaigns:detail' campaign.id %}">{% trans "Back" %}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <h2 class="text-xl font-semibold mb-3">{% trans "Pending" %} ({{ pending_count }})</h2>
+
+        <div class="overflow-x-auto">
+          <table class="table table-zebra">
+            <thead>
+              <tr>
+                <th>{% trans "Time" %}</th>
+                <th>{% trans "Donor" %}</th>
+                <th>{% trans "Amount" %}</th>
+                <th>{% trans "Display" %}</th>
+                <th>{% trans "Group" %}</th>
+                <th class="text-right">{% trans "Actions" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for d in pending_donations %}
+                <tr>
+                  <td class="whitespace-nowrap text-sm opacity-70">{{ d.created_at }}</td>
+                  <td class="font-semibold">{{ d.donor.username }}</td>
+                  <td class="font-semibold">{{ d.amount_text }} ₫</td>
+                  <td class="text-sm">
+                    {% if d.is_anonymous %}
+                      <span class="badge badge-ghost">{% trans "Anonymous" %}</span>
+                    {% elif d.display_name %}
+                      {{ d.display_name }}
+                    {% else %}
+                      <span class="opacity-70">({% trans "No display name" %})</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-sm">
+                    {% if d.group %}
+                      {{ d.group.name }}
+                    {% else %}
+                      <span class="opacity-70">—</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-right whitespace-nowrap">
+                    <form class="inline" method="post" action="{% url 'campaigns:approve_donation' campaign.id d.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-success btn-sm" type="submit">{% trans "Approve" %}</button>
+                    </form>
+                    <form class="inline ml-1" method="post" action="{% url 'campaigns:reject_donation' campaign.id d.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-error btn-sm" type="submit">{% trans "Reject" %}</button>
+                    </form>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6">
+                    <div class="alert alert-info"><span>{% trans "No pending donation requests." %}</span></div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign up" %}{% endblock %}
+
+{% block content %}
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <div class="card bg-base-100 w-full max-w-xl">
+      <div class="card-body">
+        <h1 class="text-3xl font-bold mb-2">{% trans "Sign up" %}</h1>
+
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-error">
+              <div>
+                {% for e in form.non_field_errors %}
+                  <div>{{ e }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <label class="form-control w-full block">
+            <div class="label"><span class="label-text">{% trans "Username" %}</span></div>
+            {{ form.username }}
+            {% if form.username.errors %}
+              <div class="label">
+                <span class="label-text-alt text-error">
+                  {% for e in form.username.errors %}{{ e }}{% if not forloop.last %} {% endif %}{% endfor %}
+                </span>
+              </div>
+            {% endif %}
+          </label>
+
+          <label class="form-control w-full block">
+            <div class="label"><span class="label-text">{% trans "Email" %}</span></div>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="label">
+                <span class="label-text-alt text-error">
+                  {% for e in form.email.errors %}{{ e }}{% if not forloop.last %} {% endif %}{% endfor %}
+                </span>
+              </div>
+            {% endif %}
+          </label>
+
+          <label class="form-control w-full block">
+            <div class="label"><span class="label-text">{% trans "Phone" %}</span></div>
+            {{ form.phone }}
+            {% if form.phone.errors %}
+              <div class="label">
+                <span class="label-text-alt text-error">
+                  {% for e in form.phone.errors %}{{ e }}{% if not forloop.last %} {% endif %}{% endfor %}
+                </span>
+              </div>
+            {% endif %}
+          </label>
+
+          <label class="label cursor-pointer justify-start gap-2">
+            {{ form.can_fundraise }}
+            <span class="label-text">{% trans "I want to be a fundraiser (can create campaigns)" %}</span>
+          </label>
+          <div class="text-sm opacity-70 -mt-2">
+            {% trans "Note: This choice is permanent for the account." %}
+          </div>
+
+          <label class="form-control w-full block">
+            <div class="label"><span class="label-text">{% trans "Password" %}</span></div>
+            {{ form.password1 }}
+            <div class="label">
+              <span class="label-text-alt opacity-70 whitespace-normal leading-snug">{% trans "Minimum 8 characters, including uppercase, lowercase, number, and special character." %}</span>
+            </div>
+            {% if form.password1.errors %}
+              <div class="label">
+                <span class="label-text-alt text-error">
+                  {% for e in form.password1.errors %}{{ e }}{% if not forloop.last %} {% endif %}{% endfor %}
+                </span>
+              </div>
+            {% endif %}
+          </label>
+
+          <label class="form-control w-full block">
+            <div class="label"><span class="label-text">{% trans "Password confirmation" %}</span></div>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+              <div class="label">
+                <span class="label-text-alt text-error">
+                  {% for e in form.password2.errors %}{{ e }}{% if not forloop.last %} {% endif %}{% endfor %}
+                </span>
+              </div>
+            {% endif %}
+          </label>
+
+          <button class="btn btn-primary w-full mt-1" type="submit">{% trans "Create account" %}</button>
+        </form>
+
+        <div class="text-sm text-base-content/70 mt-4">
+          {% trans "Already have an account?" %} <a class="link" href="/accounts/login/">{% trans "Login" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('input').forEach(i => {
+      const t = (i.getAttribute('type') || '').toLowerCase()
+      if (t === 'hidden' || t === 'checkbox' || t === 'radio' || t === 'submit') return
+      i.classList.add('input', 'input-bordered', 'w-full')
+    })
+  </script>
+{% endblock %}

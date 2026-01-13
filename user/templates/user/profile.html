@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %}{% endblock %}
+
+{% block content %}
+  <div class="min-h-[70vh] flex items-center justify-center">
+    <div class="card bg-base-100 w-full max-w-2xl">
+      <div class="card-body">
+        <h1 class="text-3xl font-bold mb-2">{% trans "Profile" %}</h1>
+        <div class="text-base text-base-content">{% trans "Signed in as" %} <span class="font-semibold">{{ request.user.username }}</span></div>
+
+        <div class="mt-2">
+          {% if profile.can_fundraise %}
+            <span class="badge badge-success">{% trans "Account type: Fundraiser" %}</span>
+            <div class="text-sm opacity-70 mt-1">{% trans "Fundraiser accounts can create campaigns but cannot donate." %}</div>
+          {% else %}
+            <span class="badge badge-info">{% trans "Account type: Donor" %}</span>
+            <div class="text-sm opacity-70 mt-1">{% trans "Donor accounts can donate but cannot create campaigns." %}</div>
+          {% endif %}
+        </div>
+
+        <div class="divider"></div>
+
+        <form method="post" class="space-y-3">
+          {% csrf_token %}
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Email" %}</span></div>
+            <input class="input input-bordered w-full" type="email" name="email" value="{{ request.user.email }}" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Full name" %}</span></div>
+            <input class="input input-bordered w-full" type="text" name="full_name" value="{{ profile.full_name }}" />
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Phone" %}</span></div>
+            <input class="input input-bordered w-full" type="text" name="phone" value="{{ profile.phone }}" required />
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Avatar URL (optional)" %}</span></div>
+            <input class="input input-bordered w-full" type="url" name="avatar_url" value="{{ profile.avatar_url }}" placeholder="https://..." />
+          </label>
+
+          <label class="form-control">
+            <div class="label"><span class="label-text">{% trans "Interests (optional)" %}</span></div>
+            <textarea class="textarea textarea-bordered w-full" name="interests" rows="4" placeholder="{% trans 'e.g. education, medical, environment' %}">{{ profile.interests }}</textarea>
+          </label>
+
+          <div class="card-actions justify-end">
+            <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

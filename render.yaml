@@ -1,0 +1,24 @@
+databases:
+  - name: crowdfunding_db
+    plan: free
+    user: crowdfunding_db_user
+    databaseName: crowdfunding_db
+
+services:
+  - type: web
+    plan: free
+    name: crowdfunding-web
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn CrowdfundingProject.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: crowdfunding_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: WEB_CONCURRENCY
+        value: 4

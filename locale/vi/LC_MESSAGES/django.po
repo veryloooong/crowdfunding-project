@@ -1,0 +1,558 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Crowdfunding"
+msgstr "Gây quỹ cộng đồng"
+
+msgid "Campaigns"
+msgstr "Chiến dịch"
+
+msgid "Donated"
+msgstr "Đã ủng hộ"
+
+msgid "Groups"
+msgstr "Nhóm"
+
+msgid "Admin"
+msgstr "Quản trị"
+
+msgid "Toggle theme"
+msgstr "Đổi giao diện"
+
+msgid "Logout"
+msgstr "Đăng xuất"
+
+msgid "Login"
+msgstr "Đăng nhập"
+
+msgid "Sign up"
+msgstr "Đăng ký"
+
+msgid "Username"
+msgstr "Tên đăng nhập"
+
+msgid "Password"
+msgstr "Mật khẩu"
+
+msgid "Forgot password?"
+msgstr "Quên mật khẩu?"
+
+msgid "No account?"
+msgstr "Chưa có tài khoản?"
+
+msgid "Create campaign"
+msgstr "Tạo chiến dịch"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Image URL (optional)"
+msgstr "Đường dẫn ảnh (không bắt buộc)"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Goal amount (VND)"
+msgstr "Mục tiêu (VND)"
+
+msgid "End date"
+msgstr "Ngày kết thúc"
+
+msgid "Must be today or later"
+msgstr "Phải là hôm nay hoặc ngày sau"
+
+msgid "Categories"
+msgstr "Danh mục"
+
+msgid "Hold Ctrl/Command to select multiple. If you don't see any, add new ones below."
+msgstr "Giữ Ctrl/Command để chọn nhiều. Nếu chưa có, hãy thêm danh mục mới ở bên dưới."
+
+msgid "New categories (optional)"
+msgstr "Danh mục mới (không bắt buộc)"
+
+msgid "e.g. Education, Medical"
+msgstr "VD: Giáo dục, Y tế"
+
+msgid "Comma-separated. We'll create these categories for you."
+msgstr "Ngăn cách bằng dấu phẩy. Hệ thống sẽ tạo các danh mục này cho bạn."
+
+msgid "Tags (optional)"
+msgstr "Thẻ (không bắt buộc)"
+
+msgid "e.g. medical, education, emergency"
+msgstr "VD: yte, giaoduc, khancap"
+
+msgid "Comma-separated"
+msgstr "Ngăn cách bằng dấu phẩy"
+
+msgid "Create"
+msgstr "Tạo"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Your groups"
+msgstr "Nhóm của bạn"
+
+msgid "You are not in any groups."
+msgstr "Bạn chưa tham gia nhóm nào."
+
+msgid "Translate"
+msgstr "Dịch"
+
+msgid "Profile"
+msgstr "Hồ sơ"
+
+msgid "Welcome"
+msgstr "Chào mừng"
+
+msgid "Browse campaigns or create one to start fundraising."
+msgstr "Xem các chiến dịch hoặc tạo chiến dịch để bắt đầu gây quỹ."
+
+msgid "Browse campaigns"
+msgstr "Xem chiến dịch"
+
+msgid "Create account"
+msgstr "Tạo tài khoản"
+
+msgid "Raised"
+msgstr "Đã quyên góp"
+
+msgid "%(donors)s donor"
+msgid_plural "%(donors)s donors"
+msgstr[0] "%(donors)s người ủng hộ"
+
+msgid "Recent donations"
+msgstr "Ủng hộ gần đây"
+
+msgid "via"
+msgstr "qua"
+
+msgid "No donations yet."
+msgstr "Chưa có lượt ủng hộ nào."
+
+msgid "Donate"
+msgstr "Ủng hộ"
+
+msgid "Amount (VND)"
+msgstr "Số tiền (VND)"
+
+msgid "Display name (optional)"
+msgstr "Tên hiển thị (không bắt buộc)"
+
+msgid "Donate as group (optional)"
+msgstr "Ủng hộ với tư cách nhóm (không bắt buộc)"
+
+msgid "No group"
+msgstr "Không chọn nhóm"
+
+msgid "Donate anonymously"
+msgstr "Ủng hộ ẩn danh"
+
+msgid "Close"
+msgstr "Đóng"
+
+msgid "Login is required to donate."
+msgstr "Bạn cần đăng nhập để ủng hộ."
+
+msgid "Open"
+msgstr "Mở"
+
+msgid "Group image URL"
+msgstr "Đường dẫn ảnh nhóm"
+
+msgid "Update image"
+msgstr "Cập nhật ảnh"
+
+msgid "Paste an image URL to add/replace the group image."
+msgstr "Dán đường dẫn ảnh để thêm/thay thế ảnh nhóm."
+
+msgid "Leave"
+msgstr "Rời nhóm"
+
+msgid "Members"
+msgstr "Thành viên"
+
+msgid "Username to add"
+msgstr "Tên đăng nhập cần thêm"
+
+msgid "Add member"
+msgstr "Thêm thành viên"
+
+msgid "Leader"
+msgstr "Trưởng nhóm"
+
+msgid "Remove"
+msgstr "Xóa"
+
+msgid "by"
+msgstr "bởi"
+
+msgid "Messages"
+msgstr "Tin nhắn"
+
+msgid "Write a message..."
+msgstr "Viết tin nhắn..."
+
+msgid "Send"
+msgstr "Gửi"
+
+msgid "No messages yet."
+msgstr "Chưa có tin nhắn nào."
+
+msgid "Campaigns you have donated to."
+msgstr "Các chiến dịch bạn đã ủng hộ."
+
+msgid "Total donated"
+msgstr "Tổng đã ủng hộ"
+
+msgid "On-going"
+msgstr "Đang diễn ra"
+
+msgid "Ended"
+msgstr "Đã kết thúc"
+
+msgid "View"
+msgstr "Xem"
+
+msgid "You have not donated to any campaigns yet."
+msgstr "Bạn chưa ủng hộ chiến dịch nào."
+
+msgid "Signed in as"
+msgstr "Đăng nhập với"
+
+msgid "Full name"
+msgstr "Họ và tên"
+
+msgid "Avatar URL (optional)"
+msgstr "Đường dẫn ảnh đại diện (không bắt buộc)"
+
+msgid "Interests (optional)"
+msgstr "Sở thích (không bắt buộc)"
+
+msgid "e.g. education, medical, environment"
+msgstr "VD: giáo dục, y tế, môi trường"
+
+msgid "I am a fundraiser (can create campaigns)"
+msgstr "Tôi là người gây quỹ (có thể tạo chiến dịch)"
+
+msgid "Save"
+msgstr "Lưu"
+
+msgid "Notifications"
+msgstr "Thông báo"
+
+msgid "No notifications."
+msgstr "Không có thông báo."
+
+msgid "Password reset"
+msgstr "Đặt lại mật khẩu"
+
+msgid "Enter your email and we will send a reset link."
+msgstr "Nhập email và chúng tôi sẽ gửi liên kết đặt lại mật khẩu."
+
+msgid "Send reset link"
+msgstr "Gửi liên kết đặt lại"
+
+msgid "Password reset sent"
+msgstr "Đã gửi yêu cầu đặt lại mật khẩu"
+
+msgid "Check your email"
+msgstr "Kiểm tra email của bạn"
+
+msgid "If the email exists, a reset link has been sent."
+msgstr "Nếu email tồn tại, liên kết đặt lại đã được gửi."
+
+msgid "Set new password"
+msgstr "Đặt mật khẩu mới"
+
+msgid "Set a new password"
+msgstr "Đặt một mật khẩu mới"
+
+msgid "New password"
+msgstr "Mật khẩu mới"
+
+msgid "Confirm password"
+msgstr "Xác nhận mật khẩu"
+
+msgid "Update password"
+msgstr "Cập nhật mật khẩu"
+
+msgid "This reset link is invalid or expired."
+msgstr "Liên kết đặt lại không hợp lệ hoặc đã hết hạn."
+
+msgid "Password updated"
+msgstr "Đã cập nhật mật khẩu"
+
+msgid "You can now log in with your new password."
+msgstr "Bạn có thể đăng nhập bằng mật khẩu mới."
+
+msgid "Go to login"
+msgstr "Đi tới trang đăng nhập"
+
+msgid "You're receiving this email because you requested a password reset for your user account."
+msgstr "Bạn nhận được email này vì đã yêu cầu đặt lại mật khẩu cho tài khoản của mình."
+
+msgid "Please go to the following page and choose a new password:"
+msgstr "Vui lòng truy cập trang sau và chọn mật khẩu mới:"
+
+msgid "If you didn't request this, you can ignore this email."
+msgstr "Nếu bạn không yêu cầu, bạn có thể bỏ qua email này."
+
+msgid "Search"
+msgstr "Tìm kiếm"
+
+msgid "title or description"
+msgstr "tiêu đề hoặc mô tả"
+
+msgid "Category"
+msgstr "Danh mục"
+
+msgid "All"
+msgstr "Tất cả"
+
+msgid "Tag"
+msgstr "Thẻ"
+
+msgid "#tag name"
+msgstr "#tên thẻ"
+
+msgid "Sort"
+msgstr "Sắp xếp"
+
+msgid "Newest"
+msgstr "Mới nhất"
+
+msgid "Popular"
+msgstr "Phổ biến"
+
+msgid "Urgent"
+msgstr "Khẩn cấp"
+
+msgid "Apply"
+msgstr "Áp dụng"
+
+msgid "Reset"
+msgstr "Đặt lại"
+
+msgid "Ends"
+msgstr "Kết thúc"
+
+msgid "No campaigns found."
+msgstr "Không tìm thấy chiến dịch nào."
+
+msgid "Campaign image URL"
+msgstr "Đường dẫn ảnh chiến dịch"
+
+msgid "Update donate QR"
+msgstr "Cập nhật QR ủng hộ"
+
+msgid "Paste a QR image URL to add/replace the donate QR."
+msgstr "Dán đường dẫn ảnh QR để thêm/thay thế mã QR ủng hộ."
+
+msgid "Donate QR image URL"
+msgstr "Đường dẫn ảnh QR ủng hộ"
+
+msgid "Donate QR image URL (optional)"
+msgstr "Đường dẫn ảnh QR ủng hộ (không bắt buộc)"
+
+msgid "This QR will be shown when donors click Donate."
+msgstr "Mã QR này sẽ hiển thị khi người dùng bấm Ủng hộ."
+
+msgid "Updates"
+msgstr "Cập nhật"
+
+msgid "Update title"
+msgstr "Tiêu đề cập nhật"
+
+msgid "Write an update (Markdown supported)"
+msgstr "Viết cập nhật (hỗ trợ Markdown)"
+
+msgid "Post update"
+msgstr "Đăng cập nhật"
+
+msgid "No updates yet."
+msgstr "Chưa có cập nhật nào."
+
+msgid "Events"
+msgstr "Sự kiện"
+
+msgid "Create event"
+msgstr "Tạo sự kiện"
+
+msgid "No events."
+msgstr "Chưa có sự kiện."
+
+msgid "Share"
+msgstr "Chia sẻ"
+
+msgid "Sharing uses simple links (no third-party integration in demo)."
+msgstr "Chia sẻ bằng liên kết đơn giản (bản demo không tích hợp bên thứ ba)."
+
+msgid "For campaign"
+msgstr "Cho chiến dịch"
+
+msgid "Start time"
+msgstr "Thời gian bắt đầu"
+
+msgid "Location"
+msgstr "Địa điểm"
+
+msgid "Add to Google Calendar"
+msgstr "Thêm vào Google Calendar"
+
+msgid "Minimum 8 characters, including uppercase, lowercase, number, and special character."
+msgstr "Tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+
+msgid "Password confirmation"
+msgstr "Xác nhận mật khẩu"
+
+msgid "Already have an account?"
+msgstr "Đã có tài khoản?"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Số điện thoại"
+
+msgid "Name"
+msgstr "Tên"
+
+msgid "Create group"
+msgstr "Tạo nhóm"
+
+msgid "Paste an image URL to add/replace the campaign image."
+msgstr "Dán đường dẫn ảnh để thêm/thay thế ảnh chiến dịch."
+
+msgid "Hello"
+msgstr "Xin chào"
+
+msgid "Welcome to the crowdfunding project"
+msgstr "Chào mừng đến với dự án gây quỹ"
+
+msgid "Send request"
+msgstr "Gửi yêu cầu"
+
+msgid "Donation requests"
+msgstr "Yêu cầu ủng hộ"
+
+msgid "Approve requests to make donations visible on the campaign."
+msgstr "Duyệt yêu cầu để khoản ủng hộ hiển thị trên chiến dịch."
+
+msgid "Back"
+msgstr "Quay lại"
+
+msgid "Pending"
+msgstr "Chờ duyệt"
+
+msgid "Time"
+msgstr "Thời gian"
+
+msgid "Donor"
+msgstr "Người ủng hộ"
+
+msgid "Amount"
+msgstr "Số tiền"
+
+msgid "Display"
+msgstr "Hiển thị"
+
+msgid "Group"
+msgstr "Nhóm"
+
+msgid "Actions"
+msgstr "Thao tác"
+
+msgid "No display name"
+msgstr "Không có tên hiển thị"
+
+msgid "Approve"
+msgstr "Duyệt"
+
+msgid "Reject"
+msgstr "Từ chối"
+
+msgid "No pending donation requests."
+msgstr "Không có yêu cầu ủng hộ nào đang chờ."
+
+msgid "Your donation will appear after the campaign owner approves it."
+msgstr "Khoản ủng hộ sẽ hiển thị sau khi chủ chiến dịch duyệt."
+
+msgid "Donation request sent. Awaiting campaign owner approval."
+msgstr "Đã gửi yêu cầu ủng hộ. Đang chờ chủ chiến dịch duyệt."
+
+msgid "Campaign '%(title)s' has a new donation request (pending approval)."
+msgstr "Chiến dịch '%(title)s' vừa có một yêu cầu ủng hộ mới (chờ duyệt)."
+
+msgid "Your donation request for '%(title)s' was approved."
+msgstr "Yêu cầu ủng hộ cho '%(title)s' đã được duyệt."
+
+msgid "Your donation request for '%(title)s' was rejected."
+msgstr "Yêu cầu ủng hộ cho '%(title)s' đã bị từ chối."
+
+msgid "Donation approved."
+msgstr "Đã duyệt ủng hộ."
+
+msgid "Donation rejected."
+msgstr "Đã từ chối ủng hộ."
+
+msgid "This donation request was already decided."
+msgstr "Yêu cầu ủng hộ này đã được xử lý trước đó."
+
+msgid "You cannot manage donation requests for this campaign."
+msgstr "Bạn không thể quản lý yêu cầu ủng hộ của chiến dịch này."
+
+msgid "You cannot approve donations for this campaign."
+msgstr "Bạn không thể duyệt ủng hộ cho chiến dịch này."
+
+msgid "You cannot reject donations for this campaign."
+msgstr "Bạn không thể từ chối ủng hộ cho chiến dịch này."
+
+msgid "Fundraiser accounts cannot donate. Please use a donor account."
+msgstr "Tài khoản gây quỹ không thể ủng hộ. Vui lòng dùng tài khoản người ủng hộ."
+
+msgid "You cannot donate to your own campaign."
+msgstr "Bạn không thể ủng hộ chiến dịch của chính mình."
+
+msgid "Donation amount must be greater than 0."
+msgstr "Số tiền ủng hộ phải lớn hơn 0."
+
+msgid "Donation amount is too large."
+msgstr "Số tiền ủng hộ quá lớn."
+
+msgid "Anonymous"
+msgstr "Ẩn danh"
+
+msgid "Donor"
+msgstr "Người ủng hộ"
+
+msgid "Approved"
+msgstr "Đã duyệt"
+
+msgid "Rejected"
+msgstr "Đã từ chối"
+
+msgid "Campaign creator"
+msgstr "Người tạo chiến dịch"
+
+msgid "I want to be a fundraiser (can create campaigns)"
+msgstr "Tôi muốn là người gây quỹ (có thể tạo chiến dịch)"
+
+msgid "Note: This choice is permanent for the account."
+msgstr "Lưu ý: Lựa chọn này là cố định cho tài khoản."
+
+msgid "Account type: Fundraiser"
+msgstr "Loại tài khoản: Gây quỹ"
+
+msgid "Fundraiser accounts can create campaigns but cannot donate."
+msgstr "Tài khoản gây quỹ có thể tạo chiến dịch nhưng không thể ủng hộ."
+
+msgid "Account type: Donor"
+msgstr "Loại tài khoản: Người ủng hộ"
+
+msgid "Donor accounts can donate but cannot create campaigns."
+msgstr "Tài khoản người ủng hộ có thể ủng hộ nhưng không thể tạo chiến dịch."

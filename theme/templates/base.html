@@ -1,26 +1,126 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ ui_theme|default:'light' }}">
 <head>
-    <title>Django Tailwind</title>
+    <title>{% block title %}Crowdfunding{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}?v=20260112" type="image/svg+xml">
+    <link rel="shortcut icon" href="{% static 'img/favicon.svg' %}?v=20260112">
     {% tailwind_css %}
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 
-<body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
+<body class="min-h-screen bg-base-200 text-base-content">
+    <div
+        class="fixed inset-0 z-0 opacity-30 bg-cover bg-center pointer-events-none"
+        style="background-image: url('{% static 'img/Background.png' %}');"
+    ></div>
 
-    <div class="toast toast-top toast-end">
-        <div class="alert alert-info">
-            <span>Hello from daisyUi 👋</span>
+    <div class="relative z-10">
+    <div class="navbar bg-base-100">
+        <div class="navbar-start">
+            <a class="btn btn-ghost text-lg" href="/">{% trans "Crowdfunding" %}</a>
+        </div>
+
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="/">{% trans "Campaigns" %}</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="/donations/donated/">{% trans "Donated" %}</a></li>
+                {% endif %}
+                <li><a href="/groups/">{% trans "Groups" %}</a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-end gap-2">
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="{% trans 'Translate' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.486 2 2 6.037 2 11c0 2.638 1.248 5.01 3.25 6.65L4 22l4.732-2.37C9.76 19.87 10.86 20 12 20c5.514 0 10-4.037 10-9s-4.486-9-10-9zm0 16c-1.02 0-2.014-.12-2.96-.356L7.1 18.6l.56-2.62-1.63-1.23C4.83 13.65 4 12.37 4 11c0-3.86 3.59-7 8-7s8 3.14 8 7-3.59 7-8 7z" />
+                    </svg>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-10 w-40 p-2 shadow">
+                    <li>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                            <input type="hidden" name="language" value="en" />
+                            <button class="w-full text-left" type="submit">English</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                            <input type="hidden" name="language" value="vi" />
+                            <button class="w-full text-left" type="submit">Tiếng Việt</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            <a class="btn btn-ghost" href="/accounts/toggle-theme/">{% trans "Toggle theme" %}</a>
+
+            {% if request.user.is_authenticated %}
+                <a class="btn btn-ghost btn-circle relative" href="/accounts/notifications/" aria-label="{% trans 'Notifications' %}">
+                    {% if unread_notifications_count|default:0|add:0 > 0 %}
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    {% endif %}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z" />
+                        <path d="M10 18a2 2 0 001.995-1.85L12 16H8a2 2 0 001.85 1.995L10 18z" />
+                    </svg>
+                </a>
+
+                {% if request.user.is_staff or request.user.is_superuser %}
+                    <a class="btn btn-ghost" href="/admin/">{% trans "Admin" %}</a>
+                {% endif %}
+
+                <a class="btn btn-ghost btn-circle" href="/accounts/profile/" aria-label="{% trans 'Profile' %}">
+                    {% if nav_profile and nav_profile.avatar_url %}
+                        <div class="avatar">
+                            <div class="w-8 rounded-full">
+                                <img src="{{ nav_profile.avatar_url }}" alt="{{ request.user.username }}" />
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="avatar placeholder">
+                            <div class="bg-neutral text-neutral-content rounded-full w-8">
+                                <span class="text-xs">{{ request.user.username|slice:':1'|upper }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </a>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <a class="btn btn-ghost" href="/accounts/profile/">{% trans "Profile" %}</a>
+                <form method="post" action="/accounts/logout/">
+                    {% csrf_token %}
+                    <button class="btn btn-secondary" type="submit">{% trans "Logout" %}</button>
+                </form>
+            {% else %}
+                <a class="btn btn-ghost" href="/accounts/login/">{% trans "Login" %}</a>
+                <a class="btn btn-primary" href="/accounts/signup/">{% trans "Sign up" %}</a>
+            {% endif %}
         </div>
     </div>
 
-<div class="container mx-auto">
-    <section class="flex items-center justify-center h-screen">
-        <h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-    </section>
-</div>
+    <main class="container mx-auto p-4">
+        <div id="flash-messages" class="space-y-2">
+          {% if messages %}
+              {% for message in messages %}
+                  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                      <span>{{ message }}</span>
+                  </div>
+              {% endfor %}
+          {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+    </div>
 </body>
 </html>

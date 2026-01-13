@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Create group" %}{% endblock %}
+
+{% block content %}
+  <div class="card bg-base-100 max-w-2xl mx-auto">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold mb-2">{% trans "Create group" %}</h1>
+      <form method="post" class="space-y-3">
+        {% csrf_token %}
+
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Name" %}</span></div>
+          <input class="input input-bordered w-full" name="name" required />
+        </label>
+
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Image URL (optional)" %}</span></div>
+          <input class="input input-bordered w-full" name="image_url" type="url" placeholder="https://..." />
+        </label>
+
+        <label class="form-control w-full block">
+          <div class="label"><span class="label-text">{% trans "Description" %}</span></div>
+          <textarea class="textarea textarea-bordered w-full" name="description" rows="4"></textarea>
+        </label>
+
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary" type="submit">{% trans "Create" %}</button>
+          <a class="btn btn-ghost" href="/groups/">{% trans "Cancel" %}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

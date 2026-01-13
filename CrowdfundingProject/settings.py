@@ -10,22 +10,35 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure--fe9y-i+e@!v)mz75j%19ro@&fw56z8v_$qv7l&9&v=$pp$m7j"
+SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-dev-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+
+# Hosts
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 
 ALLOWED_HOSTS = []
+
+if RENDER_EXTERNAL_HOSTNAME:
+  ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+ALLOWED_HOSTS.extend(["localhost", "127.0.0.1", "::1"])
 
 # Tailwind
 
@@ -47,12 +60,17 @@ INSTALLED_APPS = [
   "heroicons",
   # Project apps
   "user",
+  "campaigns",
+  "donations",
+  "groups",
   "theme",
 ]
 
 MIDDLEWARE = [
   "django.middleware.security.SecurityMiddleware",
+  "whitenoise.middleware.WhiteNoiseMiddleware",
   "django.contrib.sessions.middleware.SessionMiddleware",
+  "django.middleware.locale.LocaleMiddleware",
   "django.middleware.common.CommonMiddleware",
   "django.middleware.csrf.CsrfViewMiddleware",
   "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -72,8 +90,10 @@ TEMPLATES = [
     "OPTIONS": {
       "context_processors": [
         "django.template.context_processors.request",
+        "django.template.context_processors.i18n",
         "django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
+        "user.context_processors.nav_profile",
       ],
     },
   },
@@ -86,10 +106,10 @@ WSGI_APPLICATION = "CrowdfundingProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-  "default": {
-    "ENGINE": "django.db.backends.sqlite3",
-    "NAME": BASE_DIR / "db.sqlite3",
-  }
+  "default": dj_database_url.config(
+    default=os.environ.get("DATABASE_URL", "sqlite:///" + str(BASE_DIR / "db.sqlite3")),
+    conn_max_age=600,
+  )
 }
 
 
@@ -109,6 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
   {
     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
   },
+  {
+    "NAME": "user.validators.PasswordComplexityValidator",
+  },
 ]
 
 
@@ -116,6 +139,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
+
+LANGUAGES = [
+  ("en", "English"),
+  ("vi", "Tiếng Việt"),
+]
+
+LOCALE_PATHS = [
+  BASE_DIR / "locale",
+]
 
 TIME_ZONE = "UTC"
 
@@ -128,6 +160,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+if not DEBUG:
+  STATIC_ROOT = BASE_DIR / "staticfiles"
+  STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Auth
+
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+# Theme
+
+DEFAULT_UI_THEME = "light"
+
+# Dev-friendly password reset emails
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

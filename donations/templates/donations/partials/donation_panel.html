@@ -1,0 +1,52 @@
+{% load i18n %}
+
+<div id="donation-panel-{{ campaign.id }}" class="space-y-3">
+  {% if error_message %}
+    <div id="flash-messages" hx-swap-oob="true" class="space-y-2">
+      <div class="alert alert-error"><span>{{ error_message }}</span></div>
+    </div>
+  {% elif success_message %}
+    <div id="flash-messages" hx-swap-oob="true" class="space-y-2">
+      <div class="alert alert-success"><span>{{ success_message }}</span></div>
+    </div>
+  {% endif %}
+
+  {% if error_message %}
+    <div class="alert alert-error"><span>{{ error_message }}</span></div>
+  {% endif %}
+
+  {% if success_message and not error_message %}
+    <div class="alert alert-success"><span>{{ success_message }}</span></div>
+  {% endif %}
+
+  {% if disable_donate and not error_message and disable_donate_reason == "fundraiser" %}
+    <div class="alert alert-info">
+      <span>{% trans "Fundraiser accounts cannot donate. Please use a donor account." %}</span>
+    </div>
+  {% endif %}
+
+  {% if not disable_donate %}
+    {% include "donations/partials/donate_box.html" with campaign=campaign %}
+  {% endif %}
+
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="font-semibold">{% trans "Recent donations" %}</h3>
+      <div class="space-y-2">
+        {% for d in donations %}
+          <div class="flex items-center justify-between">
+            <div class="text-sm">
+              <span class="font-semibold">{{ d.public_name }}</span>
+              {% if d.group %}
+                <span class="text-base-content/70">{% trans "via" %} {{ d.group.name }}</span>
+              {% endif %}
+            </div>
+            <div class="text-sm font-semibold">{{ d.amount|floatformat:0 }} ₫</div>
+          </div>
+        {% empty %}
+          <div class="text-sm text-base-content/70">{% trans "No donations yet." %}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,7 +20,11 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
-  path("", include("user.urls")),
+  path("", include("campaigns.urls")),
+  path("i18n/", include("django.conf.urls.i18n")),
+  path("accounts/", include("user.urls")),
+  path("donations/", include("donations.urls")),
+  path("groups/", include("groups.urls")),
   path("admin/", admin.site.urls),
 ]
 

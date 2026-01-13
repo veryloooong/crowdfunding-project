@@ -1,8 +1,8 @@
-{% load static tailwind_tags %}
+{% load static tailwind_tags i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{% get_current_language %}">
 <head>
-    <title>Hello {{ username }}</title>
+    <title>{% trans "Hello" %} {{ username }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,7 +14,7 @@
         <section class="flex items-center justify-center h-screen">
             <div class="text-center">
                 <h1 class="text-5xl font-bold text-blue-600 mb-4">Hello {{ username }}! 👋</h1>
-                <p class="text-xl text-gray-600">Welcome to the crowdfunding project</p>
+                <p class="text-xl text-gray-600">{% trans "Welcome to the crowdfunding project" %}</p>
             </div>
         </section>
     </div>

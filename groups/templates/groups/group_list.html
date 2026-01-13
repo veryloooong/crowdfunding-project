@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Groups" %}{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col gap-4">
+    <div class="card bg-base-100">
+      <div class="card-body">
+        <div class="flex items-center justify-between">
+          <h1 class="text-3xl font-bold">{% trans "Your groups" %}</h1>
+          <div class="flex gap-2">
+            <a class="btn btn-secondary" href="/groups/new/">{% trans "Create" %}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for g in groups %}
+        <div class="card bg-base-100">
+          <div class="card-body">
+            {% if g.image_url %}
+              <figure class="mb-3">
+                <img class="rounded-box w-full" src="{{ g.image_url }}" alt="{{ g.name }}" />
+              </figure>
+            {% endif %}
+            <h2 class="text-xl font-semibold"><a class="link link-hover" href="/groups/{{ g.id }}/">{{ g.name }}</a></h2>
+            {% if g.description %}
+              <p class="text-base text-base-content">{{ g.description|truncatechars:180 }}</p>
+            {% endif %}
+            <div class="card-actions justify-end">
+              <a class="btn btn-primary" href="/groups/{{ g.id }}/">{% trans "Open" %}</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="card bg-base-100 md:col-span-2">
+          <div class="card-body"><div class="alert alert-info"><span>{% trans "You are not in any groups." %}</span></div></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
